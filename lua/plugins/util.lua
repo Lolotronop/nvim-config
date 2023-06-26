@@ -5,10 +5,20 @@ return {
         dependencies = {
             "nvim-lua/plenary.nvim",
         },
-        lazy = true,
+        event = "VeryLazy",
     },
 
-    { "JoosepAlviste/nvim-ts-context-commentstring", lazy = true },
+    { "JoosepAlviste/nvim-ts-context-commentstring", lazy = true  },
+
+    {
+        "smjonas/inc-rename.nvim",
+        config = function()
+            require("inc_rename").setup({ input_buffer_type = "dressing", })
+        end,
+        keys = {
+            { "<leader>cr", ":IncRename ", desc = "Code Rename" },
+        },
+    },
 
     {
         "echasnovski/mini.comment",
