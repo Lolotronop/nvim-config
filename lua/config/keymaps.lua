@@ -30,6 +30,9 @@ map("i", "kj", "<Esc>", { desc = "Faster exit" })
 map('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 map('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
+
+map("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
+map("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 map("n", "L", "<cmd>bn<cr>", { desc = "Next buffer" })
 map("n", "H", "<cmd>bp<cr>", { desc = "Previous buffer" })
 
@@ -39,7 +42,6 @@ map("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
 map("n", "<leader>ca", vim.lsp.buf.code_action, {desc = "code action"})
 map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 map("n", "<leader>cl", "<cmd>LspInfo<cr>", { desc = "Lsp Info"  })
-map("n", "<leader>bd", "<cmd>:bd<cr>", { desc = "Close buffer"  })
 
 map("n", "gd", "<cmd>Telescope lsp_definitions<cr>", { desc = "Goto Definition" })
 map("n", "gr", "<cmd>Telescope lsp_references<cr>", { desc = "References"  })

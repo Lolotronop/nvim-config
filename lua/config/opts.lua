@@ -23,4 +23,3 @@ vim.o.wildmode = "longest:full,full" -- Command-line completion mode
 vim.o.winminwidth = 5 -- Minimum window width
 vim.o.wrap = true -- Disable line wrap
 vim.o.splitkeep = "screen"
-
