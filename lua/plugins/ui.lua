@@ -13,45 +13,6 @@ return {
     },
 
     {
-        "akinsho/toggleterm.nvim",
-        cmd = "ToggleTerm",
-        opts = function()
-            if vim.loop.os_uname().sysname == "Windows_NT" then
-                require("toggleterm").setup({
-                    shell = "nu",
-                })
-            else
-                require("toggleterm").setup({
-                    shell = 'fish'
-                })
-            end
-        end,
-    },
-
-    {
-        "akinsho/bufferline.nvim",
-        event = "VeryLazy",
-        opts = {
-            options = {
-                -- stylua: ignore
-                close_command = function(n) require("mini.bufremove").delete(n, false) end,
-                -- stylua: ignore
-                right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
-                diagnostics = "nvim_lsp",
-                always_show_bufferline = true,
-                offsets = {
-                    {
-                        filetype = "neo-tree",
-                        text = "Neo-tree",
-                        highlight = "Directory",
-                        text_align = "left",
-                    },
-                },
-            },
-        },
-    },
-
-    {
         "lukas-reineke/indent-blankline.nvim",
         event = { "BufReadPost", "BufNewFile" },
         opts = {
@@ -76,18 +37,38 @@ return {
     {
         "stevearc/dressing.nvim",
         lazy = true,
-        init = function()
-            ---@diagnostic disable-next-line: duplicate-set-field
-            vim.ui.select = function(...)
-                require("lazy").load({ plugins = { "dressing.nvim" } })
-                return vim.ui.select(...)
-            end
-            ---@diagnostic disable-next-line: duplicate-set-field
-            vim.ui.input = function(...)
-                require("lazy").load({ plugins = { "dressing.nvim" } })
-                return vim.ui.input(...)
-            end
-        end,
+        opts = {},
+        -- init = function()
+        --     ---@diagnostic disable-next-line: duplicate-set-field
+        --     vim.ui.select = function(...)
+        --         require("lazy").load({ plugins = { "dressing.nvim" } })
+        --         return vim.ui.select(...)
+        --     end
+        --     ---@diagnostic disable-next-line: duplicate-set-field
+        --     vim.ui.input = function(...)
+        --         require("lazy").load({ plugins = { "dressing.nvim" } })
+        --         return vim.ui.input(...)
+        --     end
+        -- end,
+    },
+
+    {
+        "ThePrimeagen/harpoon",
+        opts = { tabline = true },
+        lazy = false,
+        keys = {
+            {"<leader>h", ":lua require('harpoon.ui').toggle_quick_menu()<cr>", desc = "Open harpoon menu"},
+            {"L", ":lua require('harpoon.ui').nav_next()<cr>", desc = "Next harpoon marker"},
+            {"H", ":lua require('harpoon.ui').nav_prev()<cr>", desc = "Prev harpoon marker"},
+        },
+        config = function (_, opts)
+            vim.cmd('highlight! HarpoonInactive guibg=NONE guifg=#63698c')
+            vim.cmd('highlight! HarpoonActive guibg=NONE guifg=white')
+            vim.cmd('highlight! HarpoonNumberActive guibg=NONE guifg=#7aa2f7')
+            vim.cmd('highlight! HarpoonNumberInactive guibg=NONE guifg=#7aa2f7')
+            vim.cmd('highlight! TabLineFill guibg=NONE guifg=white')
+            require("harpoon").setup(opts)
+        end
     },
 
     {
@@ -130,21 +111,38 @@ return {
         init = function()
             vim.o.timeout = true
             vim.o.timeoutlen = 300
-        end
+        end,
+        opts = {}
     },
 
     {
         'nvim-telescope/telescope.nvim', tag = '0.1.1',
         event = 'VeryLazy',
-        dependencies = { 'nvim-lua/plenary.nvim' }
+        dependencies = { 'nvim-lua/plenary.nvim' },
+        opts = {
+        },
+        config = function ()
+            local actions = require("telescope.actions")
+            local opts = {
+                defaults = {
+                    mappings = {
+                        i = {
+                            ["<C-j>"] = actions.move_selection_next,
+                            ["<C-k>"] = actions.move_selection_previous,
+                        },
+                    },
+                },
+            }
+            require("telescope").setup(opts)
+        end
     },
 
     {'MunifTanjim/nui.nvim', lazy = true},
-    {'kyazdani42/nvim-web-devicons', lazy = true},
 
     {
         "folke/trouble.nvim",
         cmd = { "TroubleToggle", "Trouble" },
+        dependencies = {'kyazdani42/nvim-web-devicons'},
         opts = { use_diagnostic_signs = true, icons = true },
     },
 }

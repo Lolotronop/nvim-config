@@ -53,5 +53,4 @@ map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", {desc = "Find file"})
 map("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", {desc = "Open Recent File"})
 map("n", "<leader>fn", "<cmd>enew<cr>", {desc = "New file"})
 
-map("n", "<leader>t", "<cmd>ToggleTerm size=80 direction=vertical<cr>", { desc = "ToggleTerm vertical split" })
-map("t", "<leader>t", "<cmd>ToggleTerm size=80 direction=vertical<cr>", { desc = "ToggleTerm vertical split" })
+map("n", "<leader>e", ":Ex<cr>", {desc = "Open file explorer"})
