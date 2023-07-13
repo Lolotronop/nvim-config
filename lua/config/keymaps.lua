@@ -53,4 +53,7 @@ map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", {desc = "Find file"})
 map("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", {desc = "Open Recent File"})
 map("n", "<leader>fn", "<cmd>enew<cr>", {desc = "New file"})
 
-map("n", "<leader>e", ":Ex<cr>", {desc = "Open file explorer"})
+map("n", "<leader>e", ":Rex<cr>", {desc = "Open file explorer"})
+-- Could not it to get to work with lua
+vim.cmd[[au FileType netrw nmap <buffer> h -]]
+vim.cmd[[au FileType netrw nmap <buffer> l <cr>]]

@@ -4,20 +4,20 @@ return {
         branch = 'v2.x',
         lazy = false,
         dependencies = {
-            -- LSP Support
-            {'neovim/nvim-lspconfig'},             -- Required
-            {                                      -- Optional
+            {'neovim/nvim-lspconfig'},
+            {
                 'williamboman/mason.nvim',
                 build = function()
                     pcall(vim.cmd, 'MasonUpdate')
                 end,
             },
-            {'williamboman/mason-lspconfig.nvim'}, -- Optional
+            {'williamboman/mason-lspconfig.nvim'},
 
-            -- Autocompletion
-            {'hrsh7th/nvim-cmp'},     -- Required
-            {'hrsh7th/cmp-nvim-lsp'}, -- Required
-            {'L3MON4D3/LuaSnip'},     -- Required
+            {'hrsh7th/nvim-cmp'},
+            {'hrsh7th/cmp-nvim-lsp'},
+            {'hrsh7th/cmp-path'},
+            {'hrsh7th/cmp-buffer'},
+            {'L3MON4D3/LuaSnip'},
             {'folke/neodev.nvim', opts = {}},
             { 'j-hui/fidget.nvim', opts = {}, tag = "legacy" },
         },
@@ -52,11 +52,7 @@ return {
                     documentation = cmp.config.window.bordered(),
                 },
                 mapping = {
-                    -- `Enter` key to confirm completion
                     ['<CR>'] = cmp.mapping.confirm({select = true}),
-                    -- Navigate between snippet placeholder
-                    -- ['<C-f>'] = cmp_action.luasnip_jump_forward(),
-                    -- ['<C-b>'] = cmp_action.luasnip_jump_backward(),
                     ['<C-j>'] = cmp.mapping.select_next_item(),
                     ['<C-k>'] = cmp.mapping.select_prev_item(),
                     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
@@ -83,10 +79,5 @@ return {
             },
             auto_install = false,
         },
-        -- config = function()
-        --     local opts = {
-        --     }
-        --     require('nvim-treesitter.configs').setup(opts)
-        -- end
     },
 }

@@ -36,26 +36,12 @@ return {
 
     {
         "stevearc/dressing.nvim",
-        lazy = true,
         opts = {},
-        -- init = function()
-        --     ---@diagnostic disable-next-line: duplicate-set-field
-        --     vim.ui.select = function(...)
-        --         require("lazy").load({ plugins = { "dressing.nvim" } })
-        --         return vim.ui.select(...)
-        --     end
-        --     ---@diagnostic disable-next-line: duplicate-set-field
-        --     vim.ui.input = function(...)
-        --         require("lazy").load({ plugins = { "dressing.nvim" } })
-        --         return vim.ui.input(...)
-        --     end
-        -- end,
     },
 
     {
         "ThePrimeagen/harpoon",
         opts = { tabline = true },
-        lazy = false,
         keys = {
             {"<leader>h", ":lua require('harpoon.ui').toggle_quick_menu()<cr>", desc = "Open harpoon menu"},
             {"L", ":lua require('harpoon.ui').nav_next()<cr>", desc = "Next harpoon marker"},
