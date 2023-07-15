@@ -2,7 +2,8 @@ return {
     {
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v2.x',
-        lazy = false,
+        lazy = true,
+        event = "VeryLazy",
         dependencies = {
             {'neovim/nvim-lspconfig'},
             {
@@ -60,6 +61,9 @@ return {
                     ['<C-l>'] = cmp.mapping.complete(),
                     ['<Tab>'] = cmp_action.tab_complete(),
                     ['<S-Tab>'] = cmp_action.select_prev_or_fallback(),
+                },
+                experimental = {
+                    ghost_text = true
                 }
             })
         end

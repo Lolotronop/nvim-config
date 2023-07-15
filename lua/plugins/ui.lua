@@ -36,16 +36,21 @@ return {
 
     {
         "stevearc/dressing.nvim",
+        event = "VeryLazy",
         opts = {},
     },
 
     {
         "ThePrimeagen/harpoon",
         opts = { tabline = true },
+        lazy = true,
         keys = {
-            {"<leader>h", ":lua require('harpoon.ui').toggle_quick_menu()<cr>", desc = "Open harpoon menu"},
-            {"L", ":lua require('harpoon.ui').nav_next()<cr>", desc = "Next harpoon marker"},
-            {"H", ":lua require('harpoon.ui').nav_prev()<cr>", desc = "Prev harpoon marker"},
+            -- {"<leader>h", ":lua require('harpoon.ui').toggle_quick_menu()<cr>", desc = "Open harpoon menu"},
+            -- {"L", ":lua require('harpoon.ui').nav_next()<cr>", desc = "Next harpoon marker"},
+            -- {"H", ":lua require('harpoon.ui').nav_prev()<cr>", desc = "Prev harpoon marker"},
+            {"<leader>h", function() require('harpoon.ui').toggle_quick_menu() end, desc = "Open harpoon menu"},
+            {"L", function() require('harpoon.ui').nav_next() end, desc = "Next harpoon marker"},
+            {"H", function() require('harpoon.ui').nav_prev() end, desc = "Prev harpoon marker"},
         },
         config = function (_, opts)
             vim.cmd('highlight! HarpoonInactive guibg=NONE guifg=#63698c')
@@ -59,6 +64,7 @@ return {
 
     {
         "rcarriga/nvim-notify",
+        lazy = true,
         keys = {
             {
                 "<leader>un",
@@ -127,8 +133,53 @@ return {
 
     {
         "folke/trouble.nvim",
+        event = "VeryLazy",
         cmd = { "TroubleToggle", "Trouble" },
         dependencies = {'kyazdani42/nvim-web-devicons'},
         opts = { use_diagnostic_signs = true, icons = true },
     },
+
+    {
+        "folke/noice.nvim",
+        event = "VeryLazy",
+        opts = {
+            lsp = {
+                -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+                override = {
+                    ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                    ["vim.lsp.util.stylize_markdown"] = true,
+                    ["cmp.entry.get_documentation"] = true,
+                },
+            },
+            -- you can enable a preset for easier configuration
+            presets = {
+                bottom_search = true, -- use a classic bottom cmdline for search
+                command_palette = true, -- position the cmdline and popupmenu together
+                long_message_to_split = true, -- long messages will be sent to a split
+                inc_rename = false, -- enables an input dialog for inc-rename.nvim
+                lsp_doc_border = false, -- add a border to hover docs and signature help
+            },
+        },
+        dependencies = {
+            -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+            "MunifTanjim/nui.nvim",
+            -- OPTIONAL:
+            --   `nvim-notify` is only needed, if you want to use the notification view.
+            --   If not available, we use `mini` as the fallback
+            "rcarriga/nvim-notify",
+        }
+    },
+
+    {
+        'nvim-lualine/lualine.nvim',
+        event = "VeryLazy",
+        opts = {
+            theme = "gruvbox",
+            sections = {
+                lualine_b = {"branch", "diagnistics", },
+                lualine_c = { "filename",  },
+            },
+            extensions = {"trouble"},
+        },
+    }
 }
