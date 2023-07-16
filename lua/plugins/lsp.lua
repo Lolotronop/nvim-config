@@ -42,6 +42,10 @@ return {
                 completion = {
                     completeopt = 'menu,menuone,noinsert'
                 },
+                performance = {
+                    debounce = 1,
+                    throttle = 1,
+                },
                 sources = {
                     {name = 'path'},
                     {name = 'nvim_lsp'},
