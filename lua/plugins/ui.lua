@@ -115,8 +115,18 @@ return {
         'nvim-telescope/telescope.nvim', tag = '0.1.1',
         event = 'VeryLazy',
         dependencies = { 'nvim-lua/plenary.nvim' },
-        opts = {
+        keys = {
+            {"gd", "<cmd>Telescope lsp_definitions<cr>", desc = "Goto Definition" },
+            {"gr", "<cmd>Telescope lsp_references<cr>", desc = "References"  },
+            {"gI", "<cmd>Telescope lsp_implementations<cr>", desc = "Goto Implementation" },
+            {"gy", "<cmd>Telescope lsp_type_definitions<cr>", desc = "Goto T[y]pe Definition" },
+
+            {"<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find file"},
+            {"<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Open Recent File"},
+            {"<leader>fs", "<cmd>Telescope live_grep<cr>", desc = "Open Recent File"},
+            {"<leader>fn", "<cmd>enew<cr>", desc = "New file"},
         },
+        opts = {},
         config = function ()
             local actions = require("telescope.actions")
             local opts = {
