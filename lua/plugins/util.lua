@@ -38,4 +38,6 @@ return {
             { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "Delete Buffer (Force)" },
         },
     },
+    { 'echasnovski/mini.ai', event = "VeryLazy", version = false, opts = {}},
+    { 'echasnovski/mini.pairs', event = "VeryLazy", version = false, opts = {}},
 }
