@@ -42,7 +42,9 @@ return {
 
     {
         "ThePrimeagen/harpoon",
-        opts = { tabline = true },
+        opts = {
+            -- tabline = false
+        },
         lazy = true,
         keys = {
             -- {"<leader>h", ":lua require('harpoon.ui').toggle_quick_menu()<cr>", desc = "Open harpoon menu"},
