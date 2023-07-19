@@ -51,6 +51,8 @@ return {
             {"<leader>h", function() require('harpoon.ui').toggle_quick_menu() end, desc = "Open harpoon menu"},
             {"L", function() require('harpoon.ui').nav_next() end, desc = "Next harpoon marker"},
             {"H", function() require('harpoon.ui').nav_prev() end, desc = "Prev harpoon marker"},
+            {"<leader>m", function() require("harpoon.mark").add_file() end, desc = "Add marker here"},
+
         },
         config = function (_, opts)
             vim.cmd('highlight! HarpoonInactive guibg=NONE guifg=#63698c')

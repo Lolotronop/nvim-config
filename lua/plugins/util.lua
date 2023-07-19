@@ -40,4 +40,9 @@ return {
     },
     { 'echasnovski/mini.ai', event = "VeryLazy", version = false, opts = {}},
     { 'echasnovski/mini.pairs', event = "VeryLazy", version = false, opts = {}},
+    {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        dependencies = {"nvim-treesitter"},
+        event = "VeryLazy",
+    },
 }

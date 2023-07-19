@@ -1,4 +1,3 @@
-local wk = require("which-key")
 local function map(mode, lhs, rhs, opts)
     local keys = require("lazy.core.handler").handlers.keys
     ---@cast keys LazyKeysHandler
@@ -51,6 +50,7 @@ map("n", "gy", "<cmd>Telescope lsp_type_definitions<cr>", { desc = "Goto T[y]pe 
 
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", {desc = "Find file"})
 map("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", {desc = "Open Recent File"})
+map("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", {desc = "Open Recent File"})
 map("n", "<leader>fn", "<cmd>enew<cr>", {desc = "New file"})
 
 map("n", "<leader>e", ":Rex<cr>", {desc = "Open file explorer"})
