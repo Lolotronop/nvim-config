@@ -1,6 +1,4 @@
 return {
-    { "JoosepAlviste/nvim-ts-context-commentstring", lazy = true  },
-
     {
         "smjonas/inc-rename.nvim",
         lazy = true,
@@ -15,6 +13,9 @@ return {
     {
         "echasnovski/mini.comment",
         event = "VeryLazy",
+        dependencies = {
+            { "JoosepAlviste/nvim-ts-context-commentstring", lazy = true },
+        },
         opts = {
             options = {
                 custom_commentstring = function()

@@ -32,6 +32,18 @@ return {
             -- (Optional) Configure lua language server for neovim
             require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
 
+            -- Svelte lsp does not react to js/ts changes by default
+            require('lspconfig').svelte.setup {
+                on_attach = function(client)
+                    vim.api.nvim_create_autocmd("BufWritePost", {
+                        pattern = { "*.js", "*.ts" },
+                        callback = function(ctx)
+                            client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
+                        end,
+                    })
+                end
+            }
+
             lsp.setup()
 
             local cmp = require 'cmp'
