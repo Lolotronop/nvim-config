@@ -11,6 +11,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("config.opts")
+require("config.keymaps")
 
 vim.api.nvim_create_autocmd("BufReadPost", {
     group = vim.api.nvim_create_augroup("myconf_jumplast", { clear = true }),
@@ -24,10 +25,8 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 require("lazy").setup({
-    {import = "plugins.lsp"},
-    {import = "plugins.util"},
-    {import = "plugins.neo-tree"},
     {import = "plugins.ui"},
+    {import = "plugins.util"},
+    {import = "plugins.lsp"},
 })
 
-require("config.keymaps")
