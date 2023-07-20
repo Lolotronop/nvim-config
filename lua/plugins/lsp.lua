@@ -20,7 +20,7 @@ return {
             {'hrsh7th/cmp-buffer'},
             {'L3MON4D3/LuaSnip'},
             {'folke/neodev.nvim', opts = {}},
-            { 'j-hui/fidget.nvim', opts = {}, tag = "legacy" },
+            {'j-hui/fidget.nvim', opts = {}, tag = "legacy" },
         },
         config = function ()
             local lsp = require('lsp-zero').preset({})

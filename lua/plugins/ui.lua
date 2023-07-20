@@ -7,8 +7,17 @@ return {
         config = function()
             vim.g.gruvbox_baby_telescope_theme = 1
             vim.g.gruvbox_baby_background_color = "dark"
-            -- vim.g.gruvbox_baby_transparent_mode = 1
+            vim.g.gruvbox_baby_transparent_mode = 1
             vim.cmd[[colorscheme gruvbox-baby]]
+
+            vim.cmd('highlight! clear SpellBad')
+            vim.cmd('highlight! clear SpellCap')
+            vim.cmd('highlight! clear SpellLocal')
+            vim.cmd('highlight! clear SpellRare')
+            vim.cmd('highlight! SpellBad gui=underline')
+            vim.cmd('highlight! SpellCap gui=underline')
+            vim.cmd('highlight! SpellLocal gui=underline')
+            vim.cmd('highlight! SpellRare gui=underline')
         end
     },
 
@@ -121,6 +130,9 @@ return {
             {"gI", "<cmd>Telescope lsp_implementations<cr>", desc = "Goto Implementation" },
             {"gy", "<cmd>Telescope lsp_type_definitions<cr>", desc = "Goto T[y]pe Definition" },
 
+            {"<leader>cs", "<cmd>Telescope spell_suggest<cr>", desc = "Spell suggest for word under cursor"},
+            {"<leader>ce", "<cmd>Telescope diagnostics<cr>", desc = "Show workspace diagnostics"},
+
             {"<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find file"},
             {"<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Open Recent File"},
             {"<leader>fs", "<cmd>Telescope live_grep<cr>", desc = "Open Recent File"},
@@ -190,7 +202,7 @@ return {
         opts = {
             theme = "gruvbox",
             sections = {
-                lualine_b = {"branch", "diagnistics", },
+                lualine_b = {"branch", "diagnostics", },
                 lualine_c = { "filename",  },
             },
             extensions = {"trouble"},

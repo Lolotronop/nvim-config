@@ -1,11 +1,11 @@
 local function set_map(mode, lhs, rhs, opts)
-        opts = opts or {}
-        opts.desc = opts.desc or rhs
-        opts.silent = opts.silent ~= false
-        if opts.remap and not vim.g.vscode then
-            opts.remap = nil
-        end
-        vim.keymap.set(mode, lhs, rhs, opts)
+    opts = opts or {}
+    opts.desc = opts.desc or rhs
+    opts.silent = opts.silent ~= false
+    if opts.remap and not vim.g.vscode then
+        opts.remap = nil
+    end
+    vim.keymap.set(mode, lhs, rhs, opts)
 end
 
 local function map(mode, lhs, rhs, opts)

@@ -22,3 +22,5 @@ vim.o.wildmode = "longest:full,full"
 vim.o.winminwidth = 5
 vim.o.wrap = true
 vim.o.splitkeep = "screen"
+vim.o.spelllang = 'ru_ru,en_us'
+vim.o.spell = true
