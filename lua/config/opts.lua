@@ -24,3 +24,4 @@ vim.o.wrap = true
 vim.o.splitkeep = "screen"
 vim.o.spelllang = 'ru_ru,en_us'
 vim.o.spell = true
+vim.o.cursorline = true

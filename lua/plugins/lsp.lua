@@ -19,6 +19,8 @@ return {
             {'hrsh7th/cmp-path'},
             {'hrsh7th/cmp-buffer'},
             {'L3MON4D3/LuaSnip'},
+            {'jose-elias-alvarez/null-ls.nvim'},
+            {'jay-babu/mason-null-ls.nvim'},
             {'folke/neodev.nvim', opts = {}},
             {'j-hui/fidget.nvim', opts = {}, tag = "legacy" },
         },
@@ -44,7 +46,29 @@ return {
                 end
             }
 
+            lsp.format_mapping('<leader>p', {
+                format_opts = {
+                    async = false,
+                    timeout_ms = 10000,
+                },
+                servers = {
+                    ['null-ls'] = {'javascript', 'typescript', 'lua'},
+                }
+            })
+
             lsp.setup()
+
+            local null_ls = require('null-ls')
+
+            null_ls.setup({
+                sources = {
+                }
+            })
+
+            require('mason-null-ls').setup({
+                ensure_installed = nil,
+                -- automatic_installation = true,
+            })
 
             local cmp = require 'cmp'
             local cmp_action = require('lsp-zero').cmp_action()
@@ -55,14 +79,14 @@ return {
                     completeopt = 'menu,menuone,noinsert'
                 },
                 performance = {
-                    debounce = 1,
-                    throttle = 1,
+                    debounce = 16,
+                    throttle = 16,
                 },
                 sources = {
                     {name = 'path'},
-                    {name = 'nvim_lsp'},
-                    {name = 'buffer', keyword_length = 3},
-                    {name = 'luasnip', keyword_length = 2},
+                    {name = 'nvim_lsp', keyword_length = 1},
+                    {name = 'buffer', keyword_length = 1},
+                    {name = 'luasnip', keyword_length = 1},
                 },
                 window = {
                     completion = cmp.config.window.bordered(),

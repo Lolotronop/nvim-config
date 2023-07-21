@@ -45,6 +45,7 @@ map("n", "H", "<cmd>bp<cr>", { desc = "Previous buffer" })
 map("i", "<c-k>", vim.lsp.buf.signature_help,  { desc = "Signature Help" })
 map("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
 
+map("n", "<leader>p", ":LspZeroFormat<cr><cr>", {desc = "format the thing" })
 map("n", "<leader>ca", vim.lsp.buf.code_action, {desc = "Code Actions"})
 map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 map("n", "<leader>cl", "<cmd>LspInfo<cr>", { desc = "Lsp Info"  })

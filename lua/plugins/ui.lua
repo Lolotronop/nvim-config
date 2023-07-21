@@ -107,6 +107,7 @@ return {
             -- end
 
             vim.notify = require("notify")
+            require("telescope").load_extension("notify")
         end,
     },
 
