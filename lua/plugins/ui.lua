@@ -8,7 +8,7 @@ return {
             vim.g.gruvbox_baby_telescope_theme = 1
             vim.g.gruvbox_baby_background_color = "dark"
             vim.g.gruvbox_baby_transparent_mode = 1
-            vim.cmd[[colorscheme gruvbox-baby]]
+            vim.cmd [[colorscheme gruvbox-baby]]
 
             vim.cmd('highlight! clear SpellBad')
             vim.cmd('highlight! clear SpellCap')
@@ -59,13 +59,13 @@ return {
             -- {"<leader>h", ":lua require('harpoon.ui').toggle_quick_menu()<cr>", desc = "Open harpoon menu"},
             -- {"L", ":lua require('harpoon.ui').nav_next()<cr>", desc = "Next harpoon marker"},
             -- {"H", ":lua require('harpoon.ui').nav_prev()<cr>", desc = "Prev harpoon marker"},
-            {"<leader>h", function() require('harpoon.ui').toggle_quick_menu() end, desc = "Open harpoon menu"},
-            {"L", function() require('harpoon.ui').nav_next() end, desc = "Next harpoon marker"},
-            {"H", function() require('harpoon.ui').nav_prev() end, desc = "Prev harpoon marker"},
-            {"<leader>m", function() require("harpoon.mark").add_file() end, desc = "Add marker here"},
+            { "<leader>h", function() require('harpoon.ui').toggle_quick_menu() end, desc = "Open harpoon menu" },
+            { "L",         function() require('harpoon.ui').nav_next() end,          desc = "Next harpoon marker" },
+            { "H",         function() require('harpoon.ui').nav_prev() end,          desc = "Prev harpoon marker" },
+            { "<leader>m", function() require("harpoon.mark").add_file() end,        desc = "Add marker here" },
 
         },
-        config = function (_, opts)
+        config = function(_, opts)
             vim.cmd('highlight! HarpoonInactive guibg=NONE guifg=#63698c')
             vim.cmd('highlight! HarpoonActive guibg=NONE guifg=white')
             vim.cmd('highlight! HarpoonNumberActive guibg=NONE guifg=#7aa2f7')
@@ -122,25 +122,24 @@ return {
     },
 
     {
-        'nvim-telescope/telescope.nvim', tag = '0.1.1',
+        'nvim-telescope/telescope.nvim',
+        tag = '0.1.1',
         event = 'VeryLazy',
         dependencies = { 'nvim-lua/plenary.nvim' },
         keys = {
-            {"gd", "<cmd>Telescope lsp_definitions<cr>", desc = "Goto Definition" },
-            {"gr", "<cmd>Telescope lsp_references<cr>", desc = "References"  },
-            {"gI", "<cmd>Telescope lsp_implementations<cr>", desc = "Goto Implementation" },
-            {"gy", "<cmd>Telescope lsp_type_definitions<cr>", desc = "Goto T[y]pe Definition" },
-
-            {"<leader>cs", "<cmd>Telescope spell_suggest<cr>", desc = "Spell suggest for word under cursor"},
-            {"<leader>ce", "<cmd>Telescope diagnostics<cr>", desc = "Show workspace diagnostics"},
-
-            {"<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find file"},
-            {"<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Open Recent File"},
-            {"<leader>fs", "<cmd>Telescope live_grep<cr>", desc = "Open Recent File"},
-            {"<leader>fn", "<cmd>enew<cr>", desc = "New file"},
+            { "gd",         "<cmd>Telescope lsp_definitions<cr>",      desc = "Goto Definition" },
+            { "gr",         "<cmd>Telescope lsp_references<cr>",       desc = "References" },
+            { "gI",         "<cmd>Telescope lsp_implementations<cr>",  desc = "Goto Implementation" },
+            { "gy",         "<cmd>Telescope lsp_type_definitions<cr>", desc = "Goto T[y]pe Definition" },
+            { "<leader>cs", "<cmd>Telescope spell_suggest<cr>",        desc = "Spell suggest for word under cursor" },
+            { "<leader>ce", "<cmd>Telescope diagnostics<cr>",          desc = "Show workspace diagnostics" },
+            { "<leader>ff", "<cmd>Telescope find_files<cr>",           desc = "Find file" },
+            { "<leader>fr", "<cmd>Telescope oldfiles<cr>",             desc = "Open Recent File" },
+            { "<leader>fs", "<cmd>Telescope live_grep<cr>",            desc = "Open Recent File" },
+            { "<leader>fn", "<cmd>enew<cr>",                           desc = "New file" },
         },
         opts = {},
-        config = function ()
+        config = function()
             local actions = require("telescope.actions")
             local opts = {
                 defaults = {
@@ -156,13 +155,13 @@ return {
         end
     },
 
-    {'MunifTanjim/nui.nvim', lazy = true},
+    { 'MunifTanjim/nui.nvim', lazy = true },
 
     {
         "folke/trouble.nvim",
         event = "VeryLazy",
         cmd = { "TroubleToggle", "Trouble" },
-        dependencies = {'kyazdani42/nvim-web-devicons'},
+        dependencies = { 'kyazdani42/nvim-web-devicons' },
         opts = { use_diagnostic_signs = true, icons = true },
     },
 
@@ -180,11 +179,11 @@ return {
             },
             -- you can enable a preset for easier configuration
             presets = {
-                bottom_search = true, -- use a classic bottom cmdline for search
-                command_palette = true, -- position the cmdline and popupmenu together
+                bottom_search = true,         -- use a classic bottom cmdline for search
+                command_palette = true,       -- position the cmdline and popupmenu together
                 long_message_to_split = true, -- long messages will be sent to a split
-                inc_rename = false, -- enables an input dialog for inc-rename.nvim
-                lsp_doc_border = false, -- add a border to hover docs and signature help
+                inc_rename = false,           -- enables an input dialog for inc-rename.nvim
+                lsp_doc_border = false,       -- add a border to hover docs and signature help
             },
         },
         dependencies = {
@@ -203,10 +202,10 @@ return {
         opts = {
             theme = "gruvbox",
             sections = {
-                lualine_b = {"branch", "diagnostics", },
-                lualine_c = { "filename",  },
+                lualine_b = { "branch", },
+                lualine_c = { "filename", "diagnostics" },
             },
-            extensions = {"trouble"},
+            extensions = { "trouble" },
         },
     }
 }

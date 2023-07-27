@@ -46,4 +46,17 @@ return {
         dependencies = {"nvim-treesitter"},
         event = "VeryLazy",
     },
+
+    {
+        "ThePrimeagen/refactoring.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter"
+        },
+        keys = {
+            { "<leader>cp", function() require("refactoring").debug.print_var({}) end, desc = "Debug-print variable under crursor" },
+            { "<leader>cp", function() require("refactoring").debug.print_var({}) end, desc = "Debug-print variable under crursor", mode = "v"},
+        },
+        opts = {},
+    },
 }

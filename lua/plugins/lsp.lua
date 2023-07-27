@@ -5,30 +5,30 @@ return {
         lazy = true,
         event = "VeryLazy",
         dependencies = {
-            {'neovim/nvim-lspconfig'},
+            { 'neovim/nvim-lspconfig' },
             {
                 'williamboman/mason.nvim',
                 build = function()
                     pcall(vim.cmd, 'MasonUpdate')
                 end,
             },
-            {'williamboman/mason-lspconfig.nvim'},
+            { 'williamboman/mason-lspconfig.nvim' },
 
-            {'hrsh7th/nvim-cmp'},
-            {'hrsh7th/cmp-nvim-lsp'},
-            {'hrsh7th/cmp-path'},
-            {'hrsh7th/cmp-buffer'},
-            {'L3MON4D3/LuaSnip'},
-            {'jose-elias-alvarez/null-ls.nvim'},
-            {'jay-babu/mason-null-ls.nvim'},
-            {'folke/neodev.nvim', opts = {}},
-            {'j-hui/fidget.nvim', opts = {}, tag = "legacy" },
+            { 'hrsh7th/nvim-cmp' },
+            { 'hrsh7th/cmp-nvim-lsp' },
+            { 'hrsh7th/cmp-path' },
+            { 'hrsh7th/cmp-buffer' },
+            { 'L3MON4D3/LuaSnip' },
+            { 'jose-elias-alvarez/null-ls.nvim' },
+            { 'jay-babu/mason-null-ls.nvim' },
+            { 'folke/neodev.nvim',                opts = {} },
+            { 'j-hui/fidget.nvim',                opts = {}, tag = "legacy" },
         },
-        config = function ()
+        config = function()
             local lsp = require('lsp-zero').preset({})
 
             lsp.on_attach(function(client, bufnr)
-                lsp.default_keymaps({buffer = bufnr})
+                lsp.default_keymaps({ buffer = bufnr })
             end)
 
             -- (Optional) Configure lua language server for neovim
@@ -52,7 +52,7 @@ return {
                     timeout_ms = 10000,
                 },
                 servers = {
-                    ['null-ls'] = {'javascript', 'typescript', 'lua'},
+                    ['null-ls'] = { 'javascript', 'typescript', 'lua' },
                 }
             })
 
@@ -83,17 +83,17 @@ return {
                     throttle = 16,
                 },
                 sources = {
-                    {name = 'path'},
-                    {name = 'nvim_lsp', keyword_length = 1},
-                    {name = 'buffer', keyword_length = 1},
-                    {name = 'luasnip', keyword_length = 1},
+                    { name = 'path' },
+                    { name = 'nvim_lsp', keyword_length = 1 },
+                    { name = 'buffer',   keyword_length = 1 },
+                    { name = 'luasnip',  keyword_length = 1 },
                 },
                 window = {
                     completion = cmp.config.window.bordered(),
                     documentation = cmp.config.window.bordered(),
                 },
                 mapping = {
-                    ['<CR>'] = cmp.mapping.confirm({select = true}),
+                    ['<CR>'] = cmp.mapping.confirm({ select = true }),
                     ['<C-j>'] = cmp.mapping.select_next_item(),
                     ['<C-k>'] = cmp.mapping.select_prev_item(),
                     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
@@ -140,7 +140,7 @@ return {
                     },
                     selection_modes = {
                         ['@parameter.outer'] = 'v', -- charwise
-                        ['@function.outer'] = 'V', -- linewise
+                        ['@function.outer'] = 'V',  -- linewise
                         ['@class.outer'] = '<c-v>', -- blockwise
                     },
                     include_surrounding_whitespace = true,
