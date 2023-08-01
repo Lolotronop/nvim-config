@@ -6,6 +6,8 @@ return {
         priority = 1000,
         config = function()
             vim.g.gruvbox_baby_telescope_theme = 1
+            vim.g.gruvbox_baby_keyword_style = "bold"
+            vim.g.gruvbox_baby_comment_style = "altfont"
             vim.g.gruvbox_baby_background_color = "dark"
             vim.g.gruvbox_baby_transparent_mode = 1
             vim.cmd [[colorscheme gruvbox-baby]]
@@ -207,5 +209,32 @@ return {
             },
             extensions = { "trouble" },
         },
+    },
+
+    {
+        "https://gitlab.com/HiPhish/rainbow-delimiters.nvim",
+        config = function ()
+            local rainbow_delimiters = require 'rainbow-delimiters'
+
+            vim.g.rainbow_delimiters = {
+                strategy = {
+                    [''] = rainbow_delimiters.strategy['global'],
+                    vim = rainbow_delimiters.strategy['local'],
+                },
+                query = {
+                    [''] = 'rainbow-delimiters',
+                    lua = 'rainbow-blocks',
+                },
+                highlight = {
+                    'RainbowDelimiterYellow',
+                    'RainbowDelimiterOrange',
+                    'RainbowDelimiterRed',
+                    'RainbowDelimiterBlue',
+                    'RainbowDelimiterGreen',
+                    'RainbowDelimiterViolet',
+                    'RainbowDelimiterCyan',
+                },
+            }
+        end
     }
 }
