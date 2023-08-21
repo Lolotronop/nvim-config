@@ -227,12 +227,12 @@ return {
                 },
                 highlight = {
                     'RainbowDelimiterYellow',
-                    'RainbowDelimiterOrange',
-                    'RainbowDelimiterRed',
-                    'RainbowDelimiterBlue',
-                    'RainbowDelimiterGreen',
                     'RainbowDelimiterViolet',
+                    'RainbowDelimiterBlue',
+                    'RainbowDelimiterOrange',
+                    'RainbowDelimiterGreen',
                     'RainbowDelimiterCyan',
+                    'RainbowDelimiterRed',
                 },
             }
         end

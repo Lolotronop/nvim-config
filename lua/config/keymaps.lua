@@ -34,6 +34,9 @@ map("t", "<C-l>", "<c-\\><c-n><c-w>l", { desc = "Go to right window" })
 
 map("i", "jk", "<Esc>", { desc = "Faster exit" })
 map("i", "kj", "<Esc>", { desc = "Faster exit" })
+map("i", "Jk", "<Esc>", { desc = "Faster exit" })
+map("i", "jK", "<Esc>", { desc = "Faster exit" })
+map("i", "JK", "<Esc>", { desc = "Faster exit" })
 map('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 map('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 

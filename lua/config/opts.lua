@@ -1,11 +1,14 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+vim.diagnostic.config({update_in_insert = true})
 
 vim.o.shiftwidth = 4
 vim.o.tabstop = 4
 vim.o.expandtab = true
+
 vim.o.number = true
 vim.o.relativenumber = true
+
 vim.o.termguicolors = true
 vim.wo.signcolumn = 'yes'
 vim.o.ignorecase = true
@@ -25,3 +28,6 @@ vim.o.splitkeep = "screen"
 vim.o.spelllang = 'ru_ru,en_us'
 vim.o.spell = true
 vim.o.cursorline = true
+
+vim.opt.incsearch = true
+vim.opt.hlsearch = false
