@@ -31,3 +31,5 @@ vim.o.cursorline = true
 
 vim.opt.incsearch = true
 vim.opt.hlsearch = false
+vim.o.listchars = "trail:~,tab:>-,nbsp:␣"
+vim.o.list = true
