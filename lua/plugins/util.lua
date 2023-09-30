@@ -61,4 +61,11 @@ return {
         },
         opts = {},
     },
+
+    {
+        {
+            'kkoomen/vim-doge',
+            run = ':call doge#install()'
+        }
+    }
 }
