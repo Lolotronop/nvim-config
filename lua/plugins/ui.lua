@@ -26,23 +26,32 @@ return {
     {
         "lukas-reineke/indent-blankline.nvim",
         event = { "BufReadPost", "BufNewFile" },
-        opts = {
-            char = "┊",
-            filetype_exclude = {
-                "help",
-                "alpha",
-                "dashboard",
-                "neo-tree",
-                "Trouble",
-                "lazy",
-                "mason",
-                "notify",
-                "toggleterm",
-                "lazyterm",
-            },
-            show_trailing_blankline_indent = true,
-            show_current_context = true,
-        },
+        config = function ()
+            require("ibl").setup({
+                exclude = {
+                    filetypes = {
+                        "help",
+                        "alpha",
+                        "dashboard",
+                        "neo-tree",
+                        "Trouble",
+                        "lazy",
+                        "mason",
+                        "notify",
+                        "toggleterm",
+                        "lazyterm",
+                        "man",
+                        "lspinfo",
+                        "TelescopePrompt",
+                        "TelescopeResult"
+                    }
+                },
+                indent = {
+                    -- char = {'┊'},
+                    char = '▏',
+                }
+            })
+        end
     },
 
     {
