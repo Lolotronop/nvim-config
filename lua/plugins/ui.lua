@@ -26,7 +26,7 @@ return {
     {
         "lukas-reineke/indent-blankline.nvim",
         event = { "BufReadPost", "BufNewFile" },
-        config = function ()
+        config = function()
             require("ibl").setup({
                 exclude = {
                     filetypes = {
@@ -210,19 +210,31 @@ return {
     {
         'nvim-lualine/lualine.nvim',
         event = "VeryLazy",
-        opts = {
-            theme = "gruvbox",
-            sections = {
-                lualine_b = { "branch", },
-                lualine_c = { "filename", "diagnostics" },
-            },
-            extensions = { "trouble" },
-        },
+        config = function()
+            local custom_gruvbox = require'lualine.themes.gruvbox-material'
+            local back = vim.opt.background:get()
+            custom_gruvbox.normal.c.bg = back
+            custom_gruvbox.normal.b.bg = '#32302f'
+            require('lualine').setup({
+                options = {
+                    theme = custom_gruvbox,
+                    component_separators = { left = '', right = '' },
+                    section_separators = { left = '', right = '' },
+                    extensions = { "trouble" },
+                },
+                sections = {
+                    lualine_b = { "branch", },
+                    lualine_c = { {'filetype', icon_only = true, icon = {align = 'right'}}, "filename" },
+                    lualine_x = {},
+                    lualine_y = {"require'lsp-status'.status()", 'diagnostics'}
+                },
+            })
+        end
     },
 
     {
         "https://gitlab.com/HiPhish/rainbow-delimiters.nvim",
-        config = function ()
+        config = function()
             local rainbow_delimiters = require 'rainbow-delimiters'
 
             vim.g.rainbow_delimiters = {

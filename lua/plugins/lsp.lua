@@ -22,7 +22,7 @@ return {
             { 'jose-elias-alvarez/null-ls.nvim' },
             { 'jay-babu/mason-null-ls.nvim' },
             { 'folke/neodev.nvim',                opts = {} },
-            { 'j-hui/fidget.nvim',                opts = {}, tag = "legacy" },
+            -- { 'j-hui/fidget.nvim',                opts = {}, tag = "legacy" },
         },
         config = function()
             local lsp = require('lsp-zero').preset({})
@@ -48,7 +48,7 @@ return {
 
             lsp.format_mapping('<leader>p', {
                 format_opts = {
-                    async = false,
+                    async = true,
                     timeout_ms = 10000,
                 },
                 servers = {
@@ -78,19 +78,16 @@ return {
                 completion = {
                     completeopt = 'menu,menuone,noinsert'
                 },
-                performance = {
-                    debounce = 16,
-                    throttle = 16,
-                },
                 sources = {
-                    { name = 'path' },
                     { name = 'nvim_lsp', keyword_length = 1 },
+                    { name = 'path' },
                     { name = 'buffer',   keyword_length = 1 },
                     { name = 'luasnip',  keyword_length = 1 },
                 },
                 window = {
-                    completion = cmp.config.window.bordered(),
-                    documentation = cmp.config.window.bordered(),
+                    completion = {
+                        winhighlight = "Normal:CmpNormal",
+                    }
                 },
                 mapping = {
                     ['<CR>'] = cmp.mapping.confirm({ select = true }),
