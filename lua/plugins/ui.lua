@@ -100,13 +100,16 @@ return {
         },
         opts = {
             timeout = 6000,
+            render = "minimal",
             background_colour = "#000000",
+            minimum_width = 10,
             max_height = function()
                 return math.floor(vim.o.lines * 0.75)
             end,
             max_width = function()
                 return math.floor(vim.o.columns * 0.75)
             end,
+
         },
         init = function()
             -- when noice is not enabled, install notify on VeryLazy
