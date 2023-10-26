@@ -21,13 +21,14 @@ return {
                 custom_commentstring = function()
                     return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
                 end,
-                ignore_blank_line = false,
+                ignore_blank_line = true,
                 start_of_line = false,
             },
 
             mappings = {
                 comment = "<leader>/",
                 comment_line = "<leader>/",
+                comment_visual = "<leader>/",
                 textobject = "<leader>/",
             }
         },
