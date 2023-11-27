@@ -91,12 +91,13 @@ return {
         lazy = true,
         keys = {
             {
-                "<leader>un",
+                "<leader>nd",
                 function()
                     require("notify").dismiss({ silent = true, pending = true })
                 end,
                 desc = "Dismiss all Notifications",
             },
+            { "<leader>nl", "<cmd>Telescope notify<cr>",  desc = "See notifications" },
         },
         opts = {
             timeout = 6000,
