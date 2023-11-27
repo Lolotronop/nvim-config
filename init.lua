@@ -1,5 +1,6 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then vim.fn.system({
+if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
         "git",
         "clone",
         "--filter=blob:none",
@@ -25,8 +26,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 require("lazy").setup({
-    {import = "plugins.ui"},
-    {import = "plugins.util"},
-    {import = "plugins.lsp"},
+    { import = "plugins.ui" },
+    { import = "plugins.util" },
+    { import = "plugins.lsp" },
 })
-

@@ -213,7 +213,7 @@ return {
         'nvim-lualine/lualine.nvim',
         event = "VeryLazy",
         config = function()
-            local custom_gruvbox = require'lualine.themes.gruvbox-material'
+            local custom_gruvbox = require 'lualine.themes.gruvbox-material'
             local back = vim.opt.background:get()
             custom_gruvbox.normal.c.bg = back
             custom_gruvbox.normal.b.bg = '#32302f'
@@ -226,9 +226,9 @@ return {
                 },
                 sections = {
                     lualine_b = { "branch", },
-                    lualine_c = { {'filetype', icon_only = true, icon = {align = 'right'}}, "filename" },
+                    lualine_c = { { 'filetype', icon_only = true, icon = { align = 'right' } }, "filename" },
                     lualine_x = {},
-                    lualine_y = {"require'lsp-status'.status()", 'diagnostics'}
+                    lualine_y = { "require'lsp-status'.status()", 'diagnostics' }
                 },
             })
         end

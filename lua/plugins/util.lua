@@ -19,7 +19,8 @@ return {
         opts = {
             options = {
                 custom_commentstring = function()
-                    return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
+                    return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo
+                        .commentstring
                 end,
                 ignore_blank_line = true,
                 start_of_line = false,
@@ -39,14 +40,14 @@ return {
         lazy = true,
         keys = {
             { "<leader>bd", function() require("mini.bufremove").delete(0, false) end, desc = "Delete Buffer" },
-            { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "Delete Buffer (Force)" },
+            { "<leader>bD", function() require("mini.bufremove").delete(0, true) end,  desc = "Delete Buffer (Force)" },
         },
     },
-    { 'echasnovski/mini.ai', event = "VeryLazy", version = false, opts = {}},
-    { 'echasnovski/mini.pairs', event = "VeryLazy", version = false, opts = {}},
+    { 'echasnovski/mini.ai',    event = "VeryLazy", version = false, opts = {} },
+    { 'echasnovski/mini.pairs', event = "VeryLazy", version = false, opts = {} },
     {
         "nvim-treesitter/nvim-treesitter-textobjects",
-        dependencies = {"nvim-treesitter"},
+        dependencies = { "nvim-treesitter" },
         event = "VeryLazy",
     },
 
@@ -57,8 +58,20 @@ return {
             "nvim-treesitter/nvim-treesitter"
         },
         keys = {
-            { "<leader>cp", function() require("refactoring").debug.print_var({}) end, desc = "Debug-print variable under crursor" },
-            { "<leader>cp", function() require("refactoring").debug.print_var({}) end, desc = "Debug-print variable under crursor", mode = "v"},
+            {
+                "<leader>cp",
+                function() require("refactoring").debug.print_var({}) end,
+                desc =
+                "Debug-print variable under crursor"
+            },
+            {
+                "<leader>cp",
+                function() require("refactoring").debug.print_var({}) end,
+                desc =
+                "Debug-print variable under crursor",
+                mode =
+                "v"
+            },
         },
         opts = {},
     },

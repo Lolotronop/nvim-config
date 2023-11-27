@@ -45,24 +45,24 @@ map("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 map("n", "L", "<cmd>bn<cr>", { desc = "Next buffer" })
 map("n", "H", "<cmd>bp<cr>", { desc = "Previous buffer" })
 
-map("i", "<c-k>", vim.lsp.buf.signature_help,  { desc = "Signature Help" })
+map("i", "<c-k>", vim.lsp.buf.signature_help, { desc = "Signature Help" })
 map("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
 
-map("n", "<leader>p", ":LspZeroFormat<cr><cr>", {desc = "format the thing" })
-map("n", "<leader>ca", vim.lsp.buf.code_action, {desc = "Code Actions"})
+map("n", "<leader>p", ":LspZeroFormat<cr><cr>", { desc = "format the thing" })
+map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Actions" })
 map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
-map("n", "<leader>cl", "<cmd>LspInfo<cr>", { desc = "Lsp Info"  })
+map("n", "<leader>cl", "<cmd>LspInfo<cr>", { desc = "Lsp Info" })
 
 map("n", "gD", vim.lsp.buf.declaration, { desc = "Goto Declaration" })
 
-map("n", "<leader>e", function ()
+map("n", "<leader>e", function()
     local ok, res = pcall(vim.cmd, 'Rex')
     if not ok then
-        vim.cmd[[Ex]]
+        vim.cmd [[Ex]]
     end
-end, {desc = "Open file explorer"})
+end, { desc = "Open file explorer" })
 
 -- Could not it to get to work with lua, keymaps for file explorer
-vim.cmd[[au FileType netrw nmap <buffer> h -]]
-vim.cmd[[au FileType netrw nmap <buffer> l <cr>]]
-vim.cmd[[au FileType netrw nmap <buffer> f %]]
+vim.cmd [[au FileType netrw nmap <buffer> h -]]
+vim.cmd [[au FileType netrw nmap <buffer> l <cr>]]
+vim.cmd [[au FileType netrw nmap <buffer> f %]]
