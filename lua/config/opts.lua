@@ -10,12 +10,12 @@ vim.o.number = true
 vim.o.relativenumber = true
 
 vim.o.termguicolors = true
-vim.wo.signcolumn = 'yes'
+vim.wo.signcolumn = "yes"
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.timeout = true
 vim.o.timeoutlen = 300
-vim.o.pumblend = 0   -- Popup blend
+vim.o.pumblend = 0 -- Popup blend
 vim.o.pumheight = 15 -- Maximum number of entries in a popup
 vim.o.scrolloff = 4
 vim.o.undofile = true
@@ -25,7 +25,7 @@ vim.o.wildmode = "longest:full,full"
 vim.o.winminwidth = 5
 vim.o.wrap = true
 vim.o.splitkeep = "screen"
-vim.o.spelllang = 'ru_ru,en_us'
+vim.o.spelllang = "ru_ru,en_us"
 vim.o.spell = true
 vim.o.cursorline = true
 

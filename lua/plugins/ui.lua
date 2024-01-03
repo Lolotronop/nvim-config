@@ -1,7 +1,7 @@
 return {
     -- THEME
     {
-        'luisiacc/gruvbox-baby',
+        "luisiacc/gruvbox-baby",
         lazy = false,
         priority = 1000,
         config = function()
@@ -10,17 +10,17 @@ return {
             vim.g.gruvbox_baby_comment_style = "altfont"
             vim.g.gruvbox_baby_background_color = "dark"
             vim.g.gruvbox_baby_transparent_mode = 1
-            vim.cmd [[colorscheme gruvbox-baby]]
+            vim.cmd([[colorscheme gruvbox-baby]])
 
-            vim.cmd('highlight! clear SpellBad')
-            vim.cmd('highlight! clear SpellCap')
-            vim.cmd('highlight! clear SpellLocal')
-            vim.cmd('highlight! clear SpellRare')
-            vim.cmd('highlight! SpellBad gui=underline')
-            vim.cmd('highlight! SpellCap gui=underline')
-            vim.cmd('highlight! SpellLocal gui=underline')
-            vim.cmd('highlight! SpellRare gui=underline')
-        end
+            vim.cmd("highlight! clear SpellBad")
+            vim.cmd("highlight! clear SpellCap")
+            vim.cmd("highlight! clear SpellLocal")
+            vim.cmd("highlight! clear SpellRare")
+            vim.cmd("highlight! SpellBad gui=underline")
+            vim.cmd("highlight! SpellCap gui=underline")
+            vim.cmd("highlight! SpellLocal gui=underline")
+            vim.cmd("highlight! SpellRare gui=underline")
+        end,
     },
 
     {
@@ -43,15 +43,15 @@ return {
                         "man",
                         "lspinfo",
                         "TelescopePrompt",
-                        "TelescopeResult"
-                    }
+                        "TelescopeResult",
+                    },
                 },
                 indent = {
                     -- char = {'┊'},
-                    char = '▏',
-                }
+                    char = "▏",
+                },
             })
-        end
+        end,
     },
 
     {
@@ -70,20 +70,43 @@ return {
             -- {"<leader>h", ":lua require('harpoon.ui').toggle_quick_menu()<cr>", desc = "Open harpoon menu"},
             -- {"L", ":lua require('harpoon.ui').nav_next()<cr>", desc = "Next harpoon marker"},
             -- {"H", ":lua require('harpoon.ui').nav_prev()<cr>", desc = "Prev harpoon marker"},
-            { "<leader>h", function() require('harpoon.ui').toggle_quick_menu() end, desc = "Open harpoon menu" },
-            { "L",         function() require('harpoon.ui').nav_next() end,          desc = "Next harpoon marker" },
-            { "H",         function() require('harpoon.ui').nav_prev() end,          desc = "Prev harpoon marker" },
-            { "<leader>m", function() require("harpoon.mark").add_file() end,        desc = "Add marker here" },
-
+            {
+                "<leader>h",
+                function()
+                    require("harpoon.ui").toggle_quick_menu()
+                end,
+                desc = "Open harpoon menu",
+            },
+            {
+                "L",
+                function()
+                    require("harpoon.ui").nav_next()
+                end,
+                desc = "Next harpoon marker",
+            },
+            {
+                "H",
+                function()
+                    require("harpoon.ui").nav_prev()
+                end,
+                desc = "Prev harpoon marker",
+            },
+            {
+                "<leader>m",
+                function()
+                    require("harpoon.mark").add_file()
+                end,
+                desc = "Add marker here",
+            },
         },
         config = function(_, opts)
-            vim.cmd('highlight! HarpoonInactive guibg=NONE guifg=#63698c')
-            vim.cmd('highlight! HarpoonActive guibg=NONE guifg=white')
-            vim.cmd('highlight! HarpoonNumberActive guibg=NONE guifg=#7aa2f7')
-            vim.cmd('highlight! HarpoonNumberInactive guibg=NONE guifg=#7aa2f7')
-            vim.cmd('highlight! TabLineFill guibg=NONE guifg=white')
+            vim.cmd("highlight! HarpoonInactive guibg=NONE guifg=#63698c")
+            vim.cmd("highlight! HarpoonActive guibg=NONE guifg=white")
+            vim.cmd("highlight! HarpoonNumberActive guibg=NONE guifg=#7aa2f7")
+            vim.cmd("highlight! HarpoonNumberInactive guibg=NONE guifg=#7aa2f7")
+            vim.cmd("highlight! TabLineFill guibg=NONE guifg=white")
             require("harpoon").setup(opts)
-        end
+        end,
     },
 
     {
@@ -97,7 +120,7 @@ return {
                 end,
                 desc = "Dismiss all Notifications",
             },
-            { "<leader>nl", "<cmd>Telescope notify<cr>",  desc = "See notifications" },
+            { "<leader>nl", "<cmd>Telescope notify<cr>", desc = "See notifications" },
         },
         opts = {
             timeout = 6000,
@@ -110,7 +133,6 @@ return {
             max_width = function()
                 return math.floor(vim.o.columns * 0.75)
             end,
-
         },
         init = function()
             -- when noice is not enabled, install notify on VeryLazy
@@ -133,24 +155,24 @@ return {
             vim.o.timeout = true
             vim.o.timeoutlen = 300
         end,
-        opts = {}
+        opts = {},
     },
 
     {
-        'nvim-telescope/telescope.nvim',
-        event = 'VeryLazy',
-        dependencies = { 'nvim-lua/plenary.nvim' },
+        "nvim-telescope/telescope.nvim",
+        event = "VeryLazy",
+        dependencies = { "nvim-lua/plenary.nvim" },
         keys = {
-            { "gd",         "<cmd>Telescope lsp_definitions<cr>",      desc = "Goto Definition" },
-            { "gr",         "<cmd>Telescope lsp_references<cr>",       desc = "References" },
-            { "gI",         "<cmd>Telescope lsp_implementations<cr>",  desc = "Goto Implementation" },
-            { "gy",         "<cmd>Telescope lsp_type_definitions<cr>", desc = "Goto T[y]pe Definition" },
-            { "<leader>cs", "<cmd>Telescope spell_suggest<cr>",        desc = "Spell suggest for word under cursor" },
-            { "<leader>ce", "<cmd>Telescope diagnostics<cr>",          desc = "Show workspace diagnostics" },
-            { "<leader>ff", "<cmd>Telescope find_files<cr>",           desc = "Find file" },
-            { "<leader>fr", "<cmd>Telescope oldfiles<cr>",             desc = "Open Recent File" },
-            { "<leader>fs", "<cmd>Telescope live_grep<cr>",            desc = "Open Recent File" },
-            { "<leader>fn", "<cmd>enew<cr>",                           desc = "New file" },
+            { "gd", "<cmd>Telescope lsp_definitions<cr>", desc = "Goto Definition" },
+            { "gr", "<cmd>Telescope lsp_references<cr>", desc = "References" },
+            { "gI", "<cmd>Telescope lsp_implementations<cr>", desc = "Goto Implementation" },
+            { "gy", "<cmd>Telescope lsp_type_definitions<cr>", desc = "Goto T[y]pe Definition" },
+            { "<leader>cs", "<cmd>Telescope spell_suggest<cr>", desc = "Spell suggest for word under cursor" },
+            { "<leader>ce", "<cmd>Telescope diagnostics<cr>", desc = "Show workspace diagnostics" },
+            { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find file" },
+            { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Open Recent File" },
+            { "<leader>fs", "<cmd>Telescope live_grep<cr>", desc = "Open Recent File" },
+            { "<leader>fn", "<cmd>enew<cr>", desc = "New file" },
         },
         opts = {},
         config = function()
@@ -166,16 +188,16 @@ return {
                 },
             }
             require("telescope").setup(opts)
-        end
+        end,
     },
 
-    { 'MunifTanjim/nui.nvim', lazy = true },
+    { "MunifTanjim/nui.nvim", lazy = true },
 
     {
         "folke/trouble.nvim",
         event = "VeryLazy",
         cmd = { "TroubleToggle", "Trouble" },
-        dependencies = { 'kyazdani42/nvim-web-devicons' },
+        dependencies = { "kyazdani42/nvim-web-devicons" },
         opts = { use_diagnostic_signs = true, icons = true },
     },
 
@@ -193,11 +215,11 @@ return {
             },
             -- you can enable a preset for easier configuration
             presets = {
-                bottom_search = true,         -- use a classic bottom cmdline for search
-                command_palette = true,       -- position the cmdline and popupmenu together
+                bottom_search = true, -- use a classic bottom cmdline for search
+                command_palette = true, -- position the cmdline and popupmenu together
                 long_message_to_split = true, -- long messages will be sent to a split
-                inc_rename = true,            -- enables an input dialog for inc-rename.nvim
-                lsp_doc_border = false,       -- add a border to hover docs and signature help
+                inc_rename = true, -- enables an input dialog for inc-rename.nvim
+                lsp_doc_border = false, -- add a border to hover docs and signature help
             },
         },
         dependencies = {
@@ -207,58 +229,65 @@ return {
             --   `nvim-notify` is only needed, if you want to use the notification view.
             --   If not available, we use `mini` as the fallback
             "rcarriga/nvim-notify",
-        }
+        },
     },
 
     {
-        'nvim-lualine/lualine.nvim',
+        "nvim-lualine/lualine.nvim",
         event = "VeryLazy",
         config = function()
-            local custom_gruvbox = require 'lualine.themes.gruvbox-material'
+            local custom_gruvbox = require("lualine.themes.gruvbox-material")
             local back = vim.opt.background:get()
             custom_gruvbox.normal.c.bg = back
-            custom_gruvbox.normal.b.bg = '#32302f'
-            require('lualine').setup({
+            custom_gruvbox.normal.b.bg = "#32302f"
+            require("lualine").setup({
                 options = {
                     theme = custom_gruvbox,
-                    component_separators = { left = '', right = '' },
-                    section_separators = { left = '', right = '' },
+                    component_separators = { left = "", right = "" },
+                    section_separators = { left = "", right = "" },
                     extensions = { "trouble" },
                 },
                 sections = {
-                    lualine_b = { "branch", },
-                    lualine_c = { { 'filetype', icon_only = true, icon = { align = 'right' } }, "filename" },
+                    lualine_b = { "branch" },
+                    lualine_c = { { "filetype", icon_only = true, icon = { align = "right" } }, "filename" },
                     lualine_x = {},
-                    lualine_y = { "require'lsp-status'.status()", 'diagnostics' }
+                    lualine_y = { "require'lsp-status'.status()", "diagnostics" },
                 },
             })
-        end
+        end,
     },
 
     {
         "https://gitlab.com/HiPhish/rainbow-delimiters.nvim",
         config = function()
-            local rainbow_delimiters = require 'rainbow-delimiters'
+            local rainbow_delimiters = require("rainbow-delimiters")
 
             vim.g.rainbow_delimiters = {
                 strategy = {
-                    [''] = rainbow_delimiters.strategy['global'],
-                    vim = rainbow_delimiters.strategy['local'],
+                    [""] = rainbow_delimiters.strategy["global"],
+                    vim = rainbow_delimiters.strategy["local"],
                 },
                 query = {
-                    [''] = 'rainbow-delimiters',
-                    lua = 'rainbow-blocks',
+                    [""] = "rainbow-delimiters",
+                    lua = "rainbow-blocks",
                 },
                 highlight = {
-                    'RainbowDelimiterYellow',
-                    'RainbowDelimiterViolet',
-                    'RainbowDelimiterBlue',
-                    'RainbowDelimiterOrange',
-                    'RainbowDelimiterGreen',
-                    'RainbowDelimiterCyan',
-                    'RainbowDelimiterRed',
+                    "RainbowDelimiterYellow",
+                    "RainbowDelimiterViolet",
+                    "RainbowDelimiterBlue",
+                    "RainbowDelimiterOrange",
+                    "RainbowDelimiterGreen",
+                    "RainbowDelimiterCyan",
+                    "RainbowDelimiterRed",
                 },
             }
-        end
-    }
+        end,
+    },
+
+    {
+        "nvim-treesitter/nvim-treesitter-context",
+        dependencies = {
+            "nvim-treesitter",
+        },
+    },
 }

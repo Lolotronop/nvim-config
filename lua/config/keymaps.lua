@@ -37,8 +37,8 @@ map("i", "kj", "<Esc>", { desc = "Faster exit" })
 map("i", "Jk", "<Esc>", { desc = "Faster exit" })
 map("i", "jK", "<Esc>", { desc = "Faster exit" })
 map("i", "JK", "<Esc>", { desc = "Faster exit" })
-map('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-map('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 map("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 map("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
@@ -56,13 +56,13 @@ map("n", "<leader>cl", "<cmd>LspInfo<cr>", { desc = "Lsp Info" })
 map("n", "gD", vim.lsp.buf.declaration, { desc = "Goto Declaration" })
 
 map("n", "<leader>e", function()
-    local ok, res = pcall(vim.cmd, 'Rex')
+    local ok, res = pcall(vim.cmd, "Rex")
     if not ok then
-        vim.cmd [[Ex]]
+        vim.cmd([[Ex]])
     end
 end, { desc = "Open file explorer" })
 
 -- Could not it to get to work with lua, keymaps for file explorer
-vim.cmd [[au FileType netrw nmap <buffer> h -]]
-vim.cmd [[au FileType netrw nmap <buffer> l <cr>]]
-vim.cmd [[au FileType netrw nmap <buffer> f %]]
+vim.cmd([[au FileType netrw nmap <buffer> h -]])
+vim.cmd([[au FileType netrw nmap <buffer> l <cr>]])
+vim.cmd([[au FileType netrw nmap <buffer> f %]])

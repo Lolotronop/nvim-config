@@ -3,7 +3,7 @@ return {
         "smjonas/inc-rename.nvim",
         lazy = true,
         config = function()
-            require("inc_rename").setup({ input_buffer_type = "dressing", })
+            require("inc_rename").setup({ input_buffer_type = "dressing" })
         end,
         keys = {
             { "<leader>cr", ":IncRename ", desc = "Code Rename" },
@@ -19,8 +19,8 @@ return {
         opts = {
             options = {
                 custom_commentstring = function()
-                    return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo
-                        .commentstring
+                    return require("ts_context_commentstring.internal").calculate_commentstring()
+                        or vim.bo.commentstring
                 end,
                 ignore_blank_line = true,
                 start_of_line = false,
@@ -31,7 +31,7 @@ return {
                 comment_line = "<leader>/",
                 comment_visual = "<leader>/",
                 textobject = "<leader>/",
-            }
+            },
         },
     },
 
@@ -39,12 +39,24 @@ return {
         "echasnovski/mini.bufremove",
         lazy = true,
         keys = {
-            { "<leader>bd", function() require("mini.bufremove").delete(0, false) end, desc = "Delete Buffer" },
-            { "<leader>bD", function() require("mini.bufremove").delete(0, true) end,  desc = "Delete Buffer (Force)" },
+            {
+                "<leader>bd",
+                function()
+                    require("mini.bufremove").delete(0, false)
+                end,
+                desc = "Delete Buffer",
+            },
+            {
+                "<leader>bD",
+                function()
+                    require("mini.bufremove").delete(0, true)
+                end,
+                desc = "Delete Buffer (Force)",
+            },
         },
     },
-    { 'echasnovski/mini.ai',    event = "VeryLazy", version = false, opts = {} },
-    { 'echasnovski/mini.pairs', event = "VeryLazy", version = false, opts = {} },
+    { "echasnovski/mini.ai", event = "VeryLazy", version = false, opts = {} },
+    { "echasnovski/mini.pairs", event = "VeryLazy", version = false, opts = {} },
     {
         "nvim-treesitter/nvim-treesitter-textobjects",
         dependencies = { "nvim-treesitter" },
@@ -55,22 +67,23 @@ return {
         "ThePrimeagen/refactoring.nvim",
         dependencies = {
             "nvim-lua/plenary.nvim",
-            "nvim-treesitter/nvim-treesitter"
+            "nvim-treesitter/nvim-treesitter",
         },
         keys = {
             {
                 "<leader>cp",
-                function() require("refactoring").debug.print_var({}) end,
-                desc =
-                "Debug-print variable under crursor"
+                function()
+                    require("refactoring").debug.print_var({})
+                end,
+                desc = "Debug-print variable under crursor",
             },
             {
                 "<leader>cp",
-                function() require("refactoring").debug.print_var({}) end,
-                desc =
-                "Debug-print variable under crursor",
-                mode =
-                "v"
+                function()
+                    require("refactoring").debug.print_var({})
+                end,
+                desc = "Debug-print variable under crursor",
+                mode = "v",
             },
         },
         opts = {},
@@ -78,8 +91,8 @@ return {
 
     {
         {
-            'kkoomen/vim-doge',
-            run = ':call doge#install()'
-        }
-    }
+            "kkoomen/vim-doge",
+            run = ":call doge#install()",
+        },
+    },
 }
