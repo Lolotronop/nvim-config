@@ -57,28 +57,15 @@ return {
         end,
     },
 
-    {
-        "ThePrimeagen/harpoon",
+    { "cbochs/grapple.nvim",
         event = "VeryLazy",
-        branch = "harpoon2",
-        dependencies = { "nvim-lua/plenary.nvim" },
+        opts = {},
         config = function()
-            local harpoon = require("harpoon")
-            harpoon:setup()
-
-            vim.keymap.set("n", "<leader>m", function()
-                harpoon:list():append()
-            end)
-            vim.keymap.set("n", "<leader>h", function()
-                harpoon.ui:toggle_quick_menu(harpoon:list())
-            end)
-
-            vim.keymap.set("n", "H", function()
-                harpoon:list():prev()
-            end)
-            vim.keymap.set("n", "L", function()
-                harpoon:list():next()
-            end)
-        end,
+            -- Lua
+            vim.keymap.set("n", "<leader>m", function() require("grapple").toggle({scope = "cwd"}) end)
+            vim.keymap.set("n", "<leader>h", function() require("grapple").toggle_tags({scope = "cwd"}) end)
+            vim.keymap.set("n", "L", function() require("grapple").cycle("forward", { scope = "cwd" }) end)
+            vim.keymap.set("n", "H", function() require("grapple").cycle("backward", { scope = "cwd" }) end)
+        end
     },
 }
