@@ -193,4 +193,29 @@ return {
     },
 
     { "folke/todo-comments.nvim", dependencies = { "nvim-lua/plenary.nvim" }, opts = { signs = false } },
+
+    {
+        "nvim-lualine/lualine.nvim",
+        event = "VeryLazy",
+        config = function()
+            local custom_gruvbox = require("lualine.themes.gruvbox-material")
+            local back = vim.opt.background:get()
+            custom_gruvbox.normal.c.bg = back
+            custom_gruvbox.normal.b.bg = "#32302f"
+            require("lualine").setup({
+                options = {
+                    theme = custom_gruvbox,
+                    component_separators = { left = "", right = "" },
+                    section_separators = { left = "", right = "" },
+                    extensions = { "trouble" },
+                },
+                sections = {
+                    lualine_b = { "branch" },
+                    lualine_c = { { "filetype", icon_only = true, icon = { align = "right" } }, "filename" },
+                    lualine_x = {},
+                    lualine_y = { "require'lsp-status'.status()", "diagnostics" },
+                },
+            })
+        end,
+    },
 }

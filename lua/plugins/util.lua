@@ -43,29 +43,27 @@ return {
 
             require("mini.surround").setup()
             require("mini.pairs").setup()
-
-            local statusline = require("mini.statusline")
-            statusline.setup()
-
-            -- You can configure sections in the statusline by overriding their
-            -- default behavior. For example, here we disable the section for
-            -- cursor information because line numbers are already enabled
-            ---@diagnostic disable-next-line: duplicate-set-field
-            statusline.section_location = function()
-                return ""
-            end
         end,
     },
 
-    { "cbochs/grapple.nvim",
-        event = "VeryLazy",
+    {
+        "cbochs/grapple.nvim",
+        event = "BufReadPost",
         opts = {},
         config = function()
             -- Lua
-            vim.keymap.set("n", "<leader>m", function() require("grapple").toggle({scope = "cwd"}) end)
-            vim.keymap.set("n", "<leader>h", function() require("grapple").toggle_tags({scope = "cwd"}) end)
-            vim.keymap.set("n", "L", function() require("grapple").cycle("forward", { scope = "cwd" }) end)
-            vim.keymap.set("n", "H", function() require("grapple").cycle("backward", { scope = "cwd" }) end)
-        end
+            vim.keymap.set("n", "<leader>m", function()
+                require("grapple").toggle({ scope = "cwd" })
+            end)
+            vim.keymap.set("n", "<leader>h", function()
+                require("grapple").toggle_tags({ scope = "cwd" })
+            end)
+            vim.keymap.set("n", "L", function()
+                require("grapple").cycle("forward", { scope = "cwd" })
+            end)
+            vim.keymap.set("n", "H", function()
+                require("grapple").cycle("backward", { scope = "cwd" })
+            end)
+        end,
     },
 }
