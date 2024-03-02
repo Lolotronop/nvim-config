@@ -19,7 +19,7 @@ return {
             { "hrsh7th/cmp-path" },
             { "hrsh7th/cmp-buffer" },
             { "L3MON4D3/LuaSnip" },
-            { "folke/neodev.nvim", opts = {} },
+            { "folke/neodev.nvim",                opts = {} },
             -- { 'j-hui/fidget.nvim',                opts = {}, tag = "legacy" },
         },
         config = function()
@@ -52,6 +52,14 @@ return {
                 end,
             })
 
+            -- postcss is just css now, idk
+            vim.filetype.add({
+                extension = {
+                    postcss = 'css',
+                    pcss = 'scss',
+                }
+            })
+
             lsp.setup()
 
             local cmp = require("cmp")
@@ -65,8 +73,8 @@ return {
                 sources = {
                     { name = "nvim_lsp", keyword_length = 1 },
                     { name = "path" },
-                    { name = "buffer", keyword_length = 1 },
-                    { name = "luasnip", keyword_length = 1 },
+                    { name = "buffer",   keyword_length = 1 },
+                    { name = "luasnip",  keyword_length = 1 },
                 },
                 window = {
                     completion = {
@@ -154,7 +162,7 @@ return {
                     },
                     selection_modes = {
                         ["@parameter.outer"] = "v", -- charwise
-                        ["@function.outer"] = "V", -- linewise
+                        ["@function.outer"] = "V",  -- linewise
                         ["@class.outer"] = "<c-v>", -- blockwise
                     },
                     include_surrounding_whitespace = true,
