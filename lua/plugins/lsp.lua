@@ -1,44 +1,55 @@
 return {
-    {
-        "VonHeikemen/lsp-zero.nvim",
-        branch = "v3.x",
-        lazy = true,
-        event = "VeryLazy",
+    { -- LSP Configuration & Plugins
+        "neovim/nvim-lspconfig",
         dependencies = {
-            { "neovim/nvim-lspconfig" },
-            {
-                "williamboman/mason.nvim",
-                build = function()
-                    pcall(vim.cmd, "MasonUpdate")
-                end,
-            },
-            { "williamboman/mason-lspconfig.nvim" },
+            "williamboman/mason.nvim",
+            "williamboman/mason-lspconfig.nvim",
+            "WhoIsSethDaniel/mason-tool-installer.nvim",
 
-            { "hrsh7th/nvim-cmp" },
-            { "hrsh7th/cmp-nvim-lsp" },
-            { "hrsh7th/cmp-path" },
-            { "hrsh7th/cmp-buffer" },
-            { "L3MON4D3/LuaSnip" },
-            { "folke/neodev.nvim",                opts = {} },
-            -- { 'j-hui/fidget.nvim',                opts = {}, tag = "legacy" },
+            { "j-hui/fidget.nvim", opts = {} },
         },
         config = function()
-            local lsp = require("lsp-zero").preset({})
+            vim.api.nvim_create_autocmd("LspAttach", {
+                group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
+                callback = function(event)
+                    local map = function(keys, func, desc)
+                        vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+                    end
 
-            lsp.on_attach(function(client, bufnr)
-                lsp.default_keymaps({ buffer = bufnr })
-            end)
+                    map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+                    map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+                    map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
+                    map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
+                    map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
 
-            require('mason').setup({})
-            require('mason-lspconfig').setup({
-                -- ensure_installed = {'tsserver', 'rust_analyzer'},
-                handlers = {
-                    lsp.default_setup,
-                },
+                    map(
+                        "<leader>ws",
+                        require("telescope.builtin").lsp_dynamic_workspace_symbols,
+                        "[W]orkspace [S]ymbols"
+                    )
+
+                    map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+                    map("<leader>cs", require("telescope.builtin").spell_suggest, "[C]ode [S]pell")
+                    map("<leader>ce", require("telescope.builtin").diagnostics, "[C]ode [E]rors")
+
+                    map("K", vim.lsp.buf.hover, "Hover Documentation")
+
+                    map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+
+                    local client = vim.lsp.get_client_by_id(event.data.client_id)
+                    if client and client.server_capabilities.documentHighlightProvider then
+                        vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+                            buffer = event.buf,
+                            callback = vim.lsp.buf.document_highlight,
+                        })
+
+                        vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+                            buffer = event.buf,
+                            callback = vim.lsp.buf.clear_references,
+                        })
+                    end
+                end,
             })
-
-            -- (Optional) Configure lua language server for neovim
-            require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
 
             -- Svelte lsp does not react to js/ts changes by default
             require("lspconfig").svelte.setup({
@@ -52,56 +63,60 @@ return {
                 end,
             })
 
-            -- postcss is just css now, idk
             vim.filetype.add({
                 extension = {
-                    postcss = 'css',
-                    pcss = 'scss',
-                }
+                    postcss = "css",
+                    pcss = "scss",
+                },
             })
 
-            lsp.setup()
+            local capabilities = vim.lsp.protocol.make_client_capabilities()
+            capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-            local cmp = require("cmp")
-            local cmp_action = require("lsp-zero").cmp_action()
-
-            cmp.setup({
-                preselect = "item",
-                completion = {
-                    completeopt = "menu,menuone,noinsert",
-                },
-                sources = {
-                    { name = "nvim_lsp", keyword_length = 1 },
-                    { name = "path" },
-                    { name = "buffer",   keyword_length = 1 },
-                    { name = "luasnip",  keyword_length = 1 },
-                },
-                window = {
-                    completion = {
-                        winhighlight = "Normal:CmpNormal",
+            local servers = {
+                lua_ls = {
+                    settings = {
+                        Lua = {
+                            runtime = { version = "LuaJIT" },
+                            workspace = {
+                                checkThirdParty = false,
+                                library = {
+                                    "${3rd}/luv/library",
+                                    unpack(vim.api.nvim_get_runtime_file("", true)),
+                                },
+                            },
+                            completion = {
+                                callSnippet = "Replace",
+                            },
+                            diagnostics = { disable = { "missing-fields" } },
+                        },
                     },
                 },
-                mapping = {
-                    ["<CR>"] = cmp.mapping.confirm({ select = true }),
-                    ["<C-j>"] = cmp.mapping.select_next_item(),
-                    ["<C-k>"] = cmp.mapping.select_prev_item(),
-                    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-                    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-                    ["<C-l>"] = cmp.mapping.complete(),
-                    ["<Tab>"] = cmp_action.tab_complete(),
-                    ["<S-Tab>"] = cmp_action.select_prev_or_fallback(),
-                },
-                experimental = {
-                    ghost_text = true,
+            }
+
+            require("mason").setup()
+
+            local ensure_installed = vim.tbl_keys(servers or {})
+            vim.list_extend(ensure_installed, {
+                "stylua",
+            })
+            require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+
+            require("mason-lspconfig").setup({
+                handlers = {
+                    function(server_name)
+                        local server = servers[server_name] or {}
+                        server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+                        require("lspconfig")[server_name].setup(server)
+                    end,
                 },
             })
         end,
     },
 
-    {
+    { -- Autoformat
         "stevearc/conform.nvim",
         event = { "BufWritePre" },
-        cmd = { "ConformInfo" },
         keys = {
             {
                 -- Customize or remove this keymap to your liking
@@ -113,61 +128,143 @@ return {
                 desc = "Format buffer",
             },
         },
-        -- Everything in opts will be passed to setup()
         opts = {
-            -- Define your formatters
+            notify_on_error = false,
+            format_on_save = {
+                timeout_ms = 500,
+                lsp_fallback = true,
+            },
             formatters_by_ft = {
                 lua = { "stylua" },
                 python = { "isort", "black" },
                 javascript = { { "prettierd", "prettier" } },
             },
-            -- Set up format-on-save
-            format_on_save = { timeout_ms = 500, lsp_fallback = true },
-            -- Customize formatters
         },
-        init = function()
-            -- If you want the formatexpr, here is the place to set it
-            -- vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+    },
+
+    { -- Autocompletion
+        "hrsh7th/nvim-cmp",
+        event = "InsertEnter",
+        dependencies = {
+            {
+                "L3MON4D3/LuaSnip",
+                build = (function()
+                    if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
+                        return
+                    end
+                    return "make install_jsregexp"
+                end)(),
+            },
+            "saadparwaiz1/cmp_luasnip",
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-path",
+            "rafamadriz/friendly-snippets",
+        },
+        config = function()
+            local cmp = require("cmp")
+            local luasnip = require("luasnip")
+            luasnip.config.setup({})
+
+            cmp.setup({
+                snippet = {
+                    expand = function(args)
+                        luasnip.lsp_expand(args.body)
+                    end,
+                },
+                completion = { completeopt = "menu,menuone,noinsert" },
+                window = {
+                    completion = {
+                        winhighlight = "Normal:CmpNormal",
+                    },
+                },
+
+                -- For an understanding of why these mappings were
+                -- chosen, you will need to read `:help ins-completion`
+                --
+                -- No, but seriously. Please read `:help ins-completion`, it is really good!
+                mapping = cmp.mapping.preset.insert({
+                    ["<C-j>"] = cmp.mapping.select_next_item(),
+                    ["<C-k>"] = cmp.mapping.select_prev_item(),
+                    ["<C-y>"] = cmp.mapping.confirm({ select = true }),
+                    ["<CR>"] = cmp.mapping.confirm({ select = true }),
+                    ["<C-Space>"] = cmp.mapping.complete({}),
+
+                    ["<C-l>"] = cmp.mapping(function()
+                        if luasnip.expand_or_locally_jumpable() then
+                            luasnip.expand_or_jump()
+                        end
+                    end, { "i", "s" }),
+                    ["<C-h>"] = cmp.mapping(function()
+                        if luasnip.locally_jumpable(-1) then
+                            luasnip.jump(-1)
+                        end
+                    end, { "i", "s" }),
+                }),
+                sources = {
+                    { name = "nvim_lsp" },
+                    { name = "luasnip" },
+                    { name = "path" },
+                    { name = "buffer" },
+                },
+                experimental = {
+                    ghost_text = true,
+                },
+            })
+        end,
+    },
+
+    { -- Highlight, edit, and navigate code
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        config = function()
+            ---@diagnostic disable-next-line: missing-fields
+            require("nvim-treesitter.configs").setup({
+                ensure_installed = { "lua" },
+                auto_install = true,
+                highlight = { enable = true },
+                indent = { enable = true },
+                textobjects = {
+                    select = {
+                        enable = true,
+                        keymaps = {
+                            ["af"] = "@function.outer",
+                            ["if"] = "@function.inner",
+                        },
+                    },
+                },
+            })
         end,
     },
 
     {
-        "nvim-treesitter/nvim-treesitter",
-        event = { "BufReadPost", "BufNewFile" },
-        lazy = false,
-        build = ":TSUpdate",
-        main = "nvim-treesitter.configs",
-        opts = {
-            highlight = { enable = true },
-            indent = { enable = true },
-            ensure_installed = {
-                "lua",
-            },
-            auto_install = false,
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
+    },
 
-            textobjects = {
-                select = {
-                    enable = true,
-                    lookahead = true,
-                    keymaps = {
-                        -- You can use the capture groups defined in textobjects.scm
-                        ["af"] = "@function.outer",
-                        ["if"] = "@function.inner",
-                        ["ac"] = "@class.outer",
-                        -- You can optionally set descriptions to the mappings (used in the desc parameter of
-                        -- nvim_buf_set_keymap) which plugins like which-key display
-                        ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
-                        -- You can also use captures from other query groups like `locals.scm`
-                        ["aS"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
-                    },
-                    selection_modes = {
-                        ["@parameter.outer"] = "v", -- charwise
-                        ["@function.outer"] = "V",  -- linewise
-                        ["@class.outer"] = "<c-v>", -- blockwise
-                    },
-                    include_surrounding_whitespace = true,
+    {
+        "https://gitlab.com/HiPhish/rainbow-delimiters.nvim",
+        config = function()
+            local rainbow_delimiters = require("rainbow-delimiters")
+
+            vim.g.rainbow_delimiters = {
+                strategy = {
+                    [""] = rainbow_delimiters.strategy["global"],
+                    vim = rainbow_delimiters.strategy["local"],
                 },
-            },
-        },
+                query = {
+                    [""] = "rainbow-delimiters",
+                    lua = "rainbow-blocks",
+                },
+                highlight = {
+                    "RainbowDelimiterYellow",
+                    "RainbowDelimiterViolet",
+                    "RainbowDelimiterBlue",
+                    "RainbowDelimiterOrange",
+                    "RainbowDelimiterGreen",
+                    "RainbowDelimiterCyan",
+                    "RainbowDelimiterRed",
+                },
+            }
+        end,
     },
 }

@@ -1,14 +1,5 @@
 return {
-    {
-        "smjonas/inc-rename.nvim",
-        lazy = true,
-        config = function()
-            require("inc_rename").setup({ input_buffer_type = "dressing" })
-        end,
-        keys = {
-            { "<leader>cr", ":IncRename ", desc = "Code Rename" },
-        },
-    },
+    "tpope/vim-sleuth",
 
     {
         "echasnovski/mini.comment",
@@ -36,63 +27,58 @@ return {
     },
 
     {
-        "echasnovski/mini.bufremove",
-        lazy = true,
+        "smjonas/inc-rename.nvim",
         keys = {
-            {
-                "<leader>bd",
-                function()
-                    require("mini.bufremove").delete(0, false)
-                end,
-                desc = "Delete Buffer",
-            },
-            {
-                "<leader>bD",
-                function()
-                    require("mini.bufremove").delete(0, true)
-                end,
-                desc = "Delete Buffer (Force)",
-            },
+            { "<leader>cr", ":IncRename ", desc = "Code Rename" },
         },
+        config = function()
+            require("inc_rename").setup({ input_buffer_type = "dressing" })
+        end,
     },
-    { "echasnovski/mini.ai", event = "VeryLazy", version = false, opts = {} },
-    { "echasnovski/mini.pairs", event = "VeryLazy", version = false, opts = {} },
+
+    { -- Collection of various small independent plugins/modules
+        "echasnovski/mini.nvim",
+        config = function()
+            require("mini.ai").setup({ n_lines = 500 })
+
+            require("mini.surround").setup()
+            require("mini.pairs").setup()
+
+            local statusline = require("mini.statusline")
+            statusline.setup()
+
+            -- You can configure sections in the statusline by overriding their
+            -- default behavior. For example, here we disable the section for
+            -- cursor information because line numbers are already enabled
+            ---@diagnostic disable-next-line: duplicate-set-field
+            statusline.section_location = function()
+                return ""
+            end
+        end,
+    },
+
     {
-        "nvim-treesitter/nvim-treesitter-textobjects",
-        dependencies = { "nvim-treesitter" },
+        "ThePrimeagen/harpoon",
         event = "VeryLazy",
-    },
+        branch = "harpoon2",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        config = function()
+            local harpoon = require("harpoon")
+            harpoon:setup()
 
-    {
-        "ThePrimeagen/refactoring.nvim",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            "nvim-treesitter/nvim-treesitter",
-        },
-        keys = {
-            {
-                "<leader>cp",
-                function()
-                    require("refactoring").debug.print_var({})
-                end,
-                desc = "Debug-print variable under crursor",
-            },
-            {
-                "<leader>cp",
-                function()
-                    require("refactoring").debug.print_var({})
-                end,
-                desc = "Debug-print variable under crursor",
-                mode = "v",
-            },
-        },
-        opts = {},
-    },
+            vim.keymap.set("n", "<leader>m", function()
+                harpoon:list():append()
+            end)
+            vim.keymap.set("n", "<leader>h", function()
+                harpoon.ui:toggle_quick_menu(harpoon:list())
+            end)
 
-    {
-        {
-            "kkoomen/vim-doge",
-            run = ":call doge#install()",
-        },
+            vim.keymap.set("n", "H", function()
+                harpoon:list():prev()
+            end)
+            vim.keymap.set("n", "L", function()
+                harpoon:list():next()
+            end)
+        end,
     },
 }
