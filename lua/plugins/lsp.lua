@@ -271,7 +271,7 @@ return {
 
     {
         "Exafunction/codeium.vim",
-        event = "BufReadPost",
+        event = "BufEnter",
         config = function()
             vim.keymap.set("i", "<C-g>", function()
                 return vim.fn["codeium#Accept"]()
@@ -285,6 +285,9 @@ return {
             vim.keymap.set("i", "<c-x>", function()
                 return vim.fn["codeium#Clear"]()
             end, { expr = true, silent = true })
+            vim.keymap.set("n", "<leader>cC", function()
+                return vim.fn["codeium#Chat"]()
+            end)
         end,
     },
 }

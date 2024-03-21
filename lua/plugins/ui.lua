@@ -218,4 +218,24 @@ return {
             })
         end,
     },
+
+    {
+        "folke/noice.nvim",
+        event = "VeryLazy",
+        opts = {
+            presets = {
+                bottom_search = true, -- use a classic bottom cmdline for search
+                long_message_to_split = true, -- long messages will be sent to a split
+            },
+            lsp = {
+                progress = {
+                    enabled = false,
+                },
+            },
+        },
+        dependencies = {
+            "MunifTanjim/nui.nvim",
+            "rcarriga/nvim-notify",
+        },
+    },
 }
