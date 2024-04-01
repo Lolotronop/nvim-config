@@ -13,6 +13,9 @@ vim.opt.winminwidth = 5
 vim.opt.splitkeep = "screen"
 vim.opt.spelllang = "ru_ru,en_us"
 vim.opt.spell = true
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
 
 vim.opt.number = true
 vim.opt.relativenumber = true
