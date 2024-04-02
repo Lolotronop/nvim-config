@@ -211,7 +211,10 @@ return {
                 },
                 sections = {
                     lualine_b = { "branch" },
-                    lualine_c = { { "filetype", icon_only = true, icon = { align = "right" } }, "filename" },
+                    lualine_c = {
+                        { "filetype", icon_only = true, icon = { align = "right" } },
+                        { "filename", path = 1 },
+                    },
                     lualine_x = {},
                     lualine_y = { "require'lsp-status'.status()", "diagnostics" },
                 },
