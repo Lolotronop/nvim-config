@@ -120,7 +120,6 @@ return {
     {
         "lukas-reineke/indent-blankline.nvim",
         event = { "BufReadPost", "BufNewFile" },
-        enabled = false,
         config = function()
             require("ibl").setup({
                 exclude = {

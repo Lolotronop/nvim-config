@@ -49,6 +49,7 @@ return {
     {
         "cbochs/grapple.nvim",
         event = "BufReadPost",
+        enabled = false,
         opts = {},
         config = function()
             -- Lua
@@ -63,6 +64,31 @@ return {
             end)
             vim.keymap.set("n", "H", function()
                 require("grapple").cycle("backward", { scope = "cwd" })
+            end)
+        end,
+    },
+
+    {
+        "ThePrimeagen/harpoon",
+        branch = "harpoon2",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        config = function()
+            local harpoon = require("harpoon")
+            harpoon:setup()
+            local set = vim.keymap.set
+
+            set("n", "<leader>m", function()
+                harpoon:list():add()
+            end)
+            set("n", "<leader>h", function()
+                harpoon.ui:toggle_quick_menu(harpoon:list())
+            end)
+
+            set("n", "H", function()
+                harpoon:list():prev()
+            end)
+            set("n", "L", function()
+                harpoon:list():next()
             end)
         end,
     },
