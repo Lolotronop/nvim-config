@@ -120,6 +120,7 @@ return {
     {
         "lukas-reineke/indent-blankline.nvim",
         event = { "BufReadPost", "BufNewFile" },
+        enabled = false,
         config = function()
             require("ibl").setup({
                 exclude = {
@@ -240,5 +241,26 @@ return {
             "MunifTanjim/nui.nvim",
             "rcarriga/nvim-notify",
         },
+    },
+
+    {
+        "stevearc/oil.nvim",
+        lazy = false,
+        opts = {
+            keymaps = {
+                ["h"] = "actions.parent",
+                ["l"] = "actions.select",
+            },
+            default_file_explorer = true,
+        },
+        keys = {
+            {
+                "<leader>e",
+                "<CMD>Oil<CR>",
+                desc = "Open parent directory",
+            },
+        },
+        -- Optional dependencies
+        dependencies = { "nvim-tree/nvim-web-devicons" },
     },
 }

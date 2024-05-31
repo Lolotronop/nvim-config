@@ -272,6 +272,7 @@ return {
     {
         "Exafunction/codeium.vim",
         event = "BufEnter",
+        enabled = false,
         config = function()
             vim.keymap.set("i", "<C-g>", function()
                 return vim.fn["codeium#Accept"]()
@@ -287,6 +288,19 @@ return {
             end, { expr = true, silent = true })
             vim.keymap.set("n", "<leader>cC", function()
                 return vim.fn["codeium#Chat"]()
+            end)
+        end,
+    },
+
+    {
+        "supermaven-inc/supermaven-nvim",
+        config = function()
+            require("supermaven-nvim").setup({
+                disable_keymaps = true,
+            })
+            local suggestion = require("supermaven-nvim.completion_preview")
+            vim.keymap.set("i", "<c-g>", function()
+                suggestion.on_accept_suggestion()
             end)
         end,
     },
