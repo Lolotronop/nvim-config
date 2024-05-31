@@ -51,18 +51,6 @@ return {
                 end,
             })
 
-            -- Svelte lsp does not react to js/ts changes by default
-            require("lspconfig").svelte.setup({
-                on_attach = function(client)
-                    vim.api.nvim_create_autocmd("BufWritePost", {
-                        pattern = { "*.js", "*.ts" },
-                        callback = function(ctx)
-                            client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
-                        end,
-                    })
-                end,
-            })
-
             vim.filetype.add({
                 extension = {
                     postcss = "css",
@@ -92,6 +80,18 @@ return {
                         },
                     },
                 },
+                svelte = {
+                    -- Svelte lsp does not react to js/ts changes by default
+                    on_attach = function(client)
+                        vim.api.nvim_create_autocmd("BufWritePost", {
+                            pattern = { "*.js", "*.ts" },
+                            group = vim.api.nvim_create_augroup("lolo-svelte-lsp-fix", { clear = true }),
+                            callback = function(ctx)
+                                client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
+                            end,
+                        })
+                    end,
+                },
             }
 
             require("mason").setup()
@@ -100,6 +100,7 @@ return {
             vim.list_extend(ensure_installed, {
                 "stylua",
             })
+
             require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
             require("mason-lspconfig").setup({
