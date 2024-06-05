@@ -42,30 +42,20 @@ return {
             require("mini.ai").setup({ n_lines = 500 })
 
             require("mini.surround").setup()
-            require("mini.pairs").setup()
+            -- require("mini.pairs").setup()
         end,
     },
 
     {
-        "cbochs/grapple.nvim",
-        event = "BufReadPost",
-        enabled = false,
+        "altermo/ultimate-autopair.nvim",
+        event = { "InsertEnter", "CmdlineEnter" },
+        branch = "v0.6",
         opts = {},
-        config = function()
-            -- Lua
-            vim.keymap.set("n", "<leader>m", function()
-                require("grapple").toggle({ scope = "cwd" })
-            end)
-            vim.keymap.set("n", "<leader>h", function()
-                require("grapple").toggle_tags({ scope = "cwd" })
-            end)
-            vim.keymap.set("n", "L", function()
-                require("grapple").cycle("forward", { scope = "cwd" })
-            end)
-            vim.keymap.set("n", "H", function()
-                require("grapple").cycle("backward", { scope = "cwd" })
-            end)
-        end,
+    },
+
+    {
+        "windwp/nvim-ts-autotag",
+        opts = {},
     },
 
     {

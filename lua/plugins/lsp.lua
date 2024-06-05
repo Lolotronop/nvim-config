@@ -35,6 +35,9 @@ return {
                     map("K", vim.lsp.buf.hover, "Hover Documentation")
 
                     map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+                    vim.keymap.set("i", "<C-s>", function()
+                        vim.lsp.buf.signature_help()
+                    end, { buffer = event.buf, desc = "[S]ignature [H]elp" })
 
                     local client = vim.lsp.get_client_by_id(event.data.client_id)
                     if client and client.server_capabilities.documentHighlightProvider then
@@ -201,9 +204,6 @@ return {
                     },
                 },
 
-                -- For an understanding of why these mappings were
-                -- chosen, you will need to read `:help ins-completion`
-                --
                 -- No, but seriously. Please read `:help ins-completion`, it is really good!
                 mapping = cmp.mapping.preset.insert({
                     ["<C-j>"] = cmp.mapping.select_next_item(),
@@ -236,7 +236,7 @@ return {
         end,
     },
 
-    { -- Highlight, edit, and navigate code
+    {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         config = function()
