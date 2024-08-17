@@ -57,7 +57,7 @@ return {
             vim.filetype.add({
                 extension = {
                     postcss = "css",
-                    pcss = "scss",
+                    pcss = "css",
                 },
             })
 
@@ -141,7 +141,11 @@ return {
             formatters_by_ft = {
                 lua = { "stylua" },
                 python = { "isort", "black" },
-                javascript = { { "prettierd", "prettier" } },
+                javascript = { "prettierd" },
+                typescript = { "prettierd" },
+                svelte = { "prettierd" },
+                css = { "prettierd" },
+                html = { "prettierd" },
             },
         },
     },
@@ -190,6 +194,7 @@ return {
             local cmp = require("cmp")
             local luasnip = require("luasnip")
             luasnip.config.setup({})
+            require("luasnip.loaders.from_vscode").lazy_load()
 
             cmp.setup({
                 snippet = {
