@@ -39,11 +39,40 @@ return {
     { -- Collection of various small independent plugins/modules
         "echasnovski/mini.nvim",
         config = function()
-            require("mini.ai").setup({ n_lines = 500 })
+            local spec_treesitter = require("mini.ai").gen_spec.treesitter
+            require("mini.ai").setup({
+                n_lines = 500,
+                custom_textobjects = {
+                    f = spec_treesitter({ a = "@function.outer", i = "@function.inner" }),
+                    o = spec_treesitter({
+                        a = { "@conditional.outer", "@loop.outer" },
+                        i = { "@conditional.inner", "@loop.inner" },
+                    }),
+                },
+            })
 
-            require("mini.surround").setup()
+            -- require("mini.surround").setup()
             -- require("mini.pairs").setup()
         end,
+    },
+
+    {
+        "echasnovski/mini.surround",
+        version = "*",
+        opts = {
+            mappings = {
+                add = "sa", -- Add surrounding in Normal and Visual modes
+                delete = "sd", -- Delete surrounding
+                find = "sf", -- Find surrounding (to the right)
+                find_left = "sF", -- Find surrounding (to the left)
+                highlight = "sh", -- Highlight surrounding
+                replace = "sr", -- Replace surrounding
+                update_n_lines = "sn", -- Update `n_lines`
+
+                suffix_last = "l", -- Suffix to search with "prev" method
+                suffix_next = "n", -- Suffix to search with "next" method
+            },
+        },
     },
 
     {
@@ -55,6 +84,7 @@ return {
 
     {
         "windwp/nvim-ts-autotag",
+        event = "InsertEnter",
         opts = {},
     },
 
