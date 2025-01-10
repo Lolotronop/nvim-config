@@ -107,6 +107,8 @@ return {
             vim.cmd([[colorscheme gruvbox-baby]])
 
             vim.cmd("highlight! BlinkCmpMenu guibg=#1d2021 ctermbg=NONE")
+            vim.cmd("highlight! SnacksIndentScope guifg=#665c54 ctermbg=NONE")
+            vim.cmd("highlight! SnacksIndent guifg=#282828 ctermbg=NONE")
 
             vim.cmd("highlight! clear SpellBad")
             vim.cmd("highlight! clear SpellCap")
@@ -120,79 +122,8 @@ return {
     },
 
     {
-        "lukas-reineke/indent-blankline.nvim",
-        event = { "BufReadPost", "BufNewFile" },
-        -- enabled = false,
-        config = function()
-            require("ibl").setup({
-                exclude = {
-                    filetypes = {
-                        "help",
-                        "alpha",
-                        "dashboard",
-                        "neo-tree",
-                        "Trouble",
-                        "lazy",
-                        "mason",
-                        "notify",
-                        "toggleterm",
-                        "lazyterm",
-                        "man",
-                        "lspinfo",
-                        "TelescopePrompt",
-                        "TelescopeResult",
-                    },
-                },
-                indent = {
-                    -- char = {'┊'},
-                    char = "▏",
-                },
-            })
-        end,
-    },
-
-    {
         "stevearc/dressing.nvim",
         opts = {},
-    },
-
-    {
-        "rcarriga/nvim-notify",
-        lazy = true,
-        keys = {
-            {
-                "<leader>nd",
-                function()
-                    require("notify").dismiss({ silent = true, pending = true })
-                end,
-                desc = "Dismiss all Notifications",
-            },
-            { "<leader>nl", "<cmd>Telescope notify<cr>", desc = "See notifications" },
-        },
-        opts = {
-            timeout = 6000,
-            render = "minimal",
-            background_colour = "#000000",
-            minimum_width = 10,
-            max_height = function()
-                return math.floor(vim.o.lines * 0.75)
-            end,
-            max_width = function()
-                return math.floor(vim.o.columns * 0.75)
-            end,
-        },
-        init = function()
-            -- when noice is not enabled, install notify on VeryLazy
-            -- local Util = require("lazyvim.util")
-            -- if not Util.has("noice.nvim") then
-            --     Util.on_very_lazy(function()
-            --         vim.notify = require("notify")
-            --     end)
-            -- end
-
-            vim.notify = require("notify")
-            require("telescope").load_extension("notify")
-        end,
     },
 
     {
@@ -246,7 +177,6 @@ return {
         },
         dependencies = {
             "MunifTanjim/nui.nvim",
-            "rcarriga/nvim-notify",
         },
     },
 
@@ -269,5 +199,27 @@ return {
         },
         -- Optional dependencies
         dependencies = { "nvim-tree/nvim-web-devicons" },
+    },
+
+    {
+        "folke/snacks.nvim",
+        priority = 1000,
+        lazy = false,
+        config = function()
+            ---@type snacks.Config
+            opts = {
+                bigfile = { enabled = true },
+                indent = { enabled = true, char = "▏", animate = { enabled = false } },
+                input = { enabled = true },
+                notifier = { enabled = true },
+                quickfile = { enabled = true },
+                statuscolumn = { enabled = true },
+                words = { enabled = true },
+            }
+            require("snacks").setup(opts)
+            vim.keymap.set("n", "<leader>nh", function()
+                require("snacks").notifier.show_history()
+            end, { desc = "Snack" })
+        end,
     },
 }
