@@ -5,6 +5,7 @@ return {
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
             "WhoIsSethDaniel/mason-tool-installer.nvim",
+            "saghen/blink.cmp",
 
             { "j-hui/fidget.nvim", opts = {} },
         },
@@ -62,7 +63,7 @@ return {
             })
 
             local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+            capabilities = vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities())
 
             local servers = {
                 lua_ls = {
@@ -133,11 +134,13 @@ return {
             },
         },
         opts = {
-            notify_on_error = false,
-            format_on_save = {
-                timeout_ms = 500,
-                lsp_fallback = true,
-            },
+            notify_on_error = true,
+            -- format_on_save = {
+            --     timeout_ms = 500,
+            --     lsp_fallback = true,
+            -- },
+            format_on_save = false,
+            lsp_fallback = true,
             formatters_by_ft = {
                 lua = { "stylua" },
                 python = { "isort", "black" },
@@ -171,74 +174,59 @@ return {
         },
     },
 
-    { -- Autocompletion
-        "hrsh7th/nvim-cmp",
-        event = "InsertEnter",
-        dependencies = {
-            {
-                "L3MON4D3/LuaSnip",
-                build = (function()
-                    if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
-                        return
-                    end
-                    return "make install_jsregexp"
-                end)(),
-            },
-            "saadparwaiz1/cmp_luasnip",
-            "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-path",
-            "hrsh7th/cmp-buffer",
-            "rafamadriz/friendly-snippets",
-        },
-        config = function()
-            local cmp = require("cmp")
-            local luasnip = require("luasnip")
-            luasnip.config.setup({})
-            require("luasnip.loaders.from_vscode").lazy_load()
+    {
+        "saghen/blink.cmp",
+        dependencies = "rafamadriz/friendly-snippets",
+        version = "*",
 
-            cmp.setup({
-                snippet = {
-                    expand = function(args)
-                        luasnip.lsp_expand(args.body)
-                    end,
+        ---@module 'blink.cmp'
+        ---@type blink.cmp.Config
+        opts = {
+            completion = {
+                menu = {
+                    -- TODO: fix transparency on completion menu
+                    winblend = 0,
                 },
-                completion = { completeopt = "menu,menuone,noinsert" },
-                window = {
-                    completion = {
-                        winhighlight = "Normal:CmpNormal",
+                accept = {
+                    auto_brackets = {
+                        enabled = true,
                     },
                 },
-
-                -- No, but seriously. Please read `:help ins-completion`, it is really good!
-                mapping = cmp.mapping.preset.insert({
-                    ["<C-j>"] = cmp.mapping.select_next_item(),
-                    ["<C-k>"] = cmp.mapping.select_prev_item(),
-                    ["<C-y>"] = cmp.mapping.confirm({ select = true }),
-                    ["<CR>"] = cmp.mapping.confirm({ select = true }),
-                    ["<C-Space>"] = cmp.mapping.complete({}),
-
-                    ["<C-l>"] = cmp.mapping(function()
-                        if luasnip.expand_or_locally_jumpable() then
-                            luasnip.expand_or_jump()
-                        end
-                    end, { "i", "s" }),
-                    ["<C-h>"] = cmp.mapping(function()
-                        if luasnip.locally_jumpable(-1) then
-                            luasnip.jump(-1)
-                        end
-                    end, { "i", "s" }),
-                }),
-                sources = {
-                    { name = "nvim_lsp" },
-                    { name = "luasnip" },
-                    { name = "path" },
-                    { name = "buffer" },
+                list = {
+                    selection = {
+                        preselect = function(ctx)
+                            return ctx.mode ~= "cmdline"
+                        end,
+                    },
                 },
-                experimental = {
-                    ghost_text = true,
-                },
-            })
-        end,
+            },
+            keymap = {
+                preset = "default",
+                ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+                ["<C-e>"] = { "hide" },
+                ["<CR>"] = { "accept", "fallback" },
+                ["<C-y>"] = { "select_and_accept" },
+
+                ["<C-j>"] = { "select_next", "fallback" },
+                ["<C-k>"] = { "select_prev", "fallback" },
+
+                ["<C-b>"] = { "scroll_documentation_up", "fallback" },
+                ["<C-f>"] = { "scroll_documentation_down", "fallback" },
+
+                ["<C-l>"] = { "snippet_forward", "fallback" },
+                ["<C-h>"] = { "snippet_backward", "fallback" },
+            },
+
+            appearance = {
+                -- use_nvim_cmp_as_default = true,
+                nerd_font_variant = "mono",
+            },
+
+            sources = {
+                default = { "lsp", "snippets", "path", "buffer" },
+            },
+        },
+        opts_extend = { "sources.default" },
     },
 
     {

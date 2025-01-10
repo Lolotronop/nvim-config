@@ -106,6 +106,8 @@ return {
             vim.g.gruvbox_baby_transparent_mode = 1
             vim.cmd([[colorscheme gruvbox-baby]])
 
+            vim.cmd("highlight! BlinkCmpMenu guibg=#1d2021 ctermbg=NONE")
+
             vim.cmd("highlight! clear SpellBad")
             vim.cmd("highlight! clear SpellCap")
             vim.cmd("highlight! clear SpellLocal")
@@ -193,7 +195,12 @@ return {
         end,
     },
 
-    { "folke/todo-comments.nvim", dependencies = { "nvim-lua/plenary.nvim" }, opts = { signs = false } },
+    {
+        "folke/todo-comments.nvim",
+        event = "VeryLazy",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        opts = { signs = false },
+    },
 
     {
         "nvim-lualine/lualine.nvim",

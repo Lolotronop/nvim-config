@@ -1,25 +1,11 @@
-vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to left window", remap = true })
-vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = true })
-vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", remap = true })
-vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
-
-vim.keymap.set("t", "<C-h>", "<c-\\><c-n><c-w>hh", { desc = "Go to left window" })
-vim.keymap.set("t", "<C-j>", "<c-\\><c-n><c-w>j", { desc = "Go to lower window" })
-vim.keymap.set("t", "<C-k>", "<c-\\><c-n><c-w>k", { desc = "Go to upper window" })
-vim.keymap.set("t", "<C-l>", "<c-\\><c-n><c-w>l", { desc = "Go to right window" })
-
 vim.keymap.set("i", "jk", "<Esc>", { desc = "Faster exit" })
 vim.keymap.set("i", "kj", "<Esc>", { desc = "Faster exit" })
 vim.keymap.set("i", "Jk", "<Esc>", { desc = "Faster exit" })
 vim.keymap.set("i", "jK", "<Esc>", { desc = "Faster exit" })
 vim.keymap.set("i", "JK", "<Esc>", { desc = "Faster exit" })
+
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
-
-vim.keymap.set("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
-vim.keymap.set("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
-vim.keymap.set("n", "L", "<cmd>bn<cr>", { desc = "Next buffer" })
-vim.keymap.set("n", "H", "<cmd>bp<cr>", { desc = "Previous buffer" })
 
 vim.keymap.set("i", "<c-k>", vim.lsp.buf.signature_help, { desc = "Signature Help" })
 vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
