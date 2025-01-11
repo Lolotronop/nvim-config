@@ -157,6 +157,7 @@ return {
         "laytan/tailwind-sorter.nvim",
         dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-lua/plenary.nvim" },
         build = "cd formatter && npm ci && npm run build",
+        event = "VeryLazy",
         config = {
             on_save_enabled = true,
             on_save_pattern = {
@@ -258,57 +259,8 @@ return {
     },
 
     {
-        "https://gitlab.com/HiPhish/rainbow-delimiters.nvim",
-        config = function()
-            local rainbow_delimiters = require("rainbow-delimiters")
-
-            vim.g.rainbow_delimiters = {
-                strategy = {
-                    [""] = rainbow_delimiters.strategy["global"],
-                    vim = rainbow_delimiters.strategy["local"],
-                },
-                query = {
-                    [""] = "rainbow-delimiters",
-                    lua = "rainbow-blocks",
-                },
-                highlight = {
-                    "RainbowDelimiterYellow",
-                    "RainbowDelimiterViolet",
-                    "RainbowDelimiterBlue",
-                    "RainbowDelimiterOrange",
-                    "RainbowDelimiterGreen",
-                    "RainbowDelimiterCyan",
-                    "RainbowDelimiterRed",
-                },
-            }
-        end,
-    },
-
-    {
-        "Exafunction/codeium.vim",
-        event = "BufEnter",
-        enabled = false,
-        config = function()
-            vim.keymap.set("i", "<C-g>", function()
-                return vim.fn["codeium#Accept"]()
-            end, { expr = true, silent = true })
-            vim.keymap.set("i", "<c-;>", function()
-                return vim.fn["codeium#CycleCompletions"](1)
-            end, { expr = true, silent = true })
-            vim.keymap.set("i", "<c-,>", function()
-                return vim.fn["codeium#CycleCompletions"](-1)
-            end, { expr = true, silent = true })
-            vim.keymap.set("i", "<c-x>", function()
-                return vim.fn["codeium#Clear"]()
-            end, { expr = true, silent = true })
-            vim.keymap.set("n", "<leader>cC", function()
-                return vim.fn["codeium#Chat"]()
-            end)
-        end,
-    },
-
-    {
         "supermaven-inc/supermaven-nvim",
+        event = "VeryLazy",
         config = function()
             require("supermaven-nvim").setup({
                 disable_keymaps = true,

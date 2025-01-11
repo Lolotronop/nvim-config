@@ -28,6 +28,7 @@ return {
 
     {
         "smjonas/inc-rename.nvim",
+        event = "VeryLazy",
         keys = {
             { "<leader>cr", ":IncRename ", desc = "Code Rename" },
         },
@@ -58,6 +59,7 @@ return {
 
     {
         "echasnovski/mini.surround",
+        event = "VeryLazy",
         version = "*",
         opts = {
             mappings = {

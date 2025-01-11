@@ -6,6 +6,7 @@ vim.keymap.set("i", "JK", "<Esc>", { desc = "Faster exit" })
 
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+vim.keymap.set("n", "<leader><CR>", "i<CR><ESC>", { desc = "Insert newline" })
 
 vim.keymap.set("i", "<c-k>", vim.lsp.buf.signature_help, { desc = "Signature Help" })
 vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })

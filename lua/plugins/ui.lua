@@ -1,6 +1,7 @@
 return {
     { -- Adds git related signs to the gutter, as well as utilities for managing changes
         "lewis6991/gitsigns.nvim",
+        event = "VeryLazy",
         opts = {
             signs = {
                 add = { text = "+" },
@@ -207,7 +208,7 @@ return {
         lazy = false,
         config = function()
             ---@type snacks.Config
-            opts = {
+            local opts = {
                 bigfile = { enabled = true },
                 indent = { enabled = true, char = "▏", animate = { enabled = false } },
                 input = { enabled = true },
@@ -220,6 +221,34 @@ return {
             vim.keymap.set("n", "<leader>nh", function()
                 require("snacks").notifier.show_history()
             end, { desc = "Snack" })
+        end,
+    },
+
+    {
+        "https://gitlab.com/HiPhish/rainbow-delimiters.nvim",
+        event = "VeryLazy",
+        config = function()
+            local rainbow_delimiters = require("rainbow-delimiters")
+
+            vim.g.rainbow_delimiters = {
+                strategy = {
+                    [""] = rainbow_delimiters.strategy["global"],
+                    vim = rainbow_delimiters.strategy["local"],
+                },
+                query = {
+                    [""] = "rainbow-delimiters",
+                    lua = "rainbow-blocks",
+                },
+                highlight = {
+                    "RainbowDelimiterYellow",
+                    "RainbowDelimiterViolet",
+                    "RainbowDelimiterBlue",
+                    "RainbowDelimiterOrange",
+                    "RainbowDelimiterGreen",
+                    "RainbowDelimiterCyan",
+                    "RainbowDelimiterRed",
+                },
+            }
         end,
     },
 }
