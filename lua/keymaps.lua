@@ -15,8 +15,8 @@ vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action
 vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 vim.keymap.set("n", "<leader>cl", "<cmd>LspInfo<cr>", { desc = "Lsp Info" })
 
-vim.keymap.set("n", "P", '"+p', { desc = "Paste from clipboard" })
-vim.keymap.set("n", "Y", '"+y', { desc = "Copy to clipboard" })
+vim.keymap.set({"n", "v"}, "P", '"+p', { desc = "Paste from clipboard" })
+vim.keymap.set({"n", "v"}, "Y", '"+y', { desc = "Copy to clipboard" })
 
 vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Goto Declaration" })
 
