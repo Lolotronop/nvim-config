@@ -169,6 +169,7 @@ return {
             presets = {
                 bottom_search = true, -- use a classic bottom cmdline for search
                 long_message_to_split = true, -- long messages will be sent to a split
+                inc_rename = true
             },
             lsp = {
                 progress = {

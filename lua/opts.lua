@@ -50,6 +50,7 @@ vim.opt.listchars = {
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = "split"
+vim.opt.cmdwinheight = 15
 vim.opt.incsearch = true
 
 vim.opt.cursorline = true

@@ -240,6 +240,15 @@ return {
                 auto_install = true,
                 highlight = { enable = true },
                 indent = { enable = true },
+                incremental_selection = {
+                    enable = true,
+                    keymaps = {
+                        init_selection = false, -- set to `false` to disable one of the mappings
+                        node_incremental = "<C-n>",
+                        scope_incremental = "grc",
+                        node_decremental = "grm",
+                    },
+                },
                 textobjects = {
                     select = {
                         enable = true,
