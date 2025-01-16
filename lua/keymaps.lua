@@ -40,3 +40,6 @@ vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" }
 vim.cmd([[au FileType netrw nmap <buffer> h -]])
 vim.cmd([[au FileType netrw nmap <buffer> l <cr>]])
 vim.cmd([[au FileType netrw nmap <buffer> f %]])
+
+-- disable command history
+vim.keymap.set("n", "q:", "<nop>")
