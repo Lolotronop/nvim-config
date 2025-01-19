@@ -108,6 +108,7 @@ return {
             vim.cmd([[colorscheme gruvbox-baby]])
 
             vim.cmd("highlight! BlinkCmpMenu guibg=#1d2021 ctermbg=NONE")
+            vim.cmd("highlight! BlinkCmpMenuSelection guibg=#3c3836 ctermbg=NONE")
             vim.cmd("highlight! SnacksIndentScope guifg=#665c54 ctermbg=NONE")
             vim.cmd("highlight! SnacksIndent guifg=#282828 ctermbg=NONE")
 
