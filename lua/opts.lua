@@ -1,6 +1,6 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
-vim.diagnostic.config({ update_in_insert = true })
+vim.diagnostic.config({ update_in_insert = true, virtual_text = true })
 vim.opt.termguicolors = true
 
 vim.opt.expandtab = true
