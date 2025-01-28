@@ -135,18 +135,18 @@ return {
         },
         opts = {
             notify_on_error = true,
-            -- format_on_save = {
-            --     timeout_ms = 500,
-            --     lsp_fallback = true,
-            -- },
-            format_on_save = false,
+            format_after_save = {
+                timeout_ms = 500,
+                lsp_fallback = true,
+                async = true,
+            },
             lsp_fallback = true,
             formatters_by_ft = {
                 lua = { "stylua" },
                 python = { "isort", "black" },
                 javascript = { "prettierd" },
                 typescript = { "prettierd" },
-                svelte = { "prettierd" },
+                svelte = { "prettierd", "prettier" },
                 css = { "prettierd" },
                 html = { "prettierd" },
             },
@@ -155,6 +155,7 @@ return {
 
     {
         "laytan/tailwind-sorter.nvim",
+        enabled = false,
         dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-lua/plenary.nvim" },
         build = "cd formatter && npm ci && npm run build",
         event = "VeryLazy",
