@@ -1,3 +1,41 @@
+local onattach = function(client_id, buf)
+    local map = function(keys, func, desc)
+        vim.keymap.set("n", keys, func, { buffer = buf, desc = "LSP: " .. desc })
+    end
+
+    map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+    map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+    map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
+    map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
+    map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
+
+    map("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
+
+    map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+    map("<leader>cs", require("telescope.builtin").spell_suggest, "[C]ode [S]pell")
+    map("<leader>ce", require("telescope.builtin").diagnostics, "[C]ode [E]rors")
+
+    map("K", vim.lsp.buf.hover, "Hover Documentation")
+
+    map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+    vim.keymap.set("i", "<C-s>", function()
+        vim.lsp.buf.signature_help()
+    end, { buffer = buf, desc = "[S]ignature [H]elp" })
+
+    local client = vim.lsp.get_client_by_id(client_id)
+    if client and client.server_capabilities.documentHighlightProvider then
+        vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+            buffer = buf,
+            callback = vim.lsp.buf.document_highlight,
+        })
+
+        vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+            buffer = buf,
+            callback = vim.lsp.buf.clear_references,
+        })
+    end
+end
+
 return {
     { -- LSP Configuration & Plugins
         "neovim/nvim-lspconfig",
@@ -12,46 +50,8 @@ return {
         config = function()
             vim.api.nvim_create_autocmd("LspAttach", {
                 group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
-                callback = function(event)
-                    local map = function(keys, func, desc)
-                        vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
-                    end
-
-                    map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-                    map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-                    map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-                    map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
-                    map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
-
-                    map(
-                        "<leader>ws",
-                        require("telescope.builtin").lsp_dynamic_workspace_symbols,
-                        "[W]orkspace [S]ymbols"
-                    )
-
-                    map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
-                    map("<leader>cs", require("telescope.builtin").spell_suggest, "[C]ode [S]pell")
-                    map("<leader>ce", require("telescope.builtin").diagnostics, "[C]ode [E]rors")
-
-                    map("K", vim.lsp.buf.hover, "Hover Documentation")
-
-                    map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-                    vim.keymap.set("i", "<C-s>", function()
-                        vim.lsp.buf.signature_help()
-                    end, { buffer = event.buf, desc = "[S]ignature [H]elp" })
-
-                    local client = vim.lsp.get_client_by_id(event.data.client_id)
-                    if client and client.server_capabilities.documentHighlightProvider then
-                        vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-                            buffer = event.buf,
-                            callback = vim.lsp.buf.document_highlight,
-                        })
-
-                        vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-                            buffer = event.buf,
-                            callback = vim.lsp.buf.clear_references,
-                        })
-                    end
+                callback = function (event)
+                    onattach(event.data.client_id, event.buf)
                 end,
             })
 
@@ -115,6 +115,34 @@ return {
                         require("lspconfig")[server_name].setup(server)
                     end,
                 },
+            })
+        end,
+    },
+
+    {
+        "scalameta/nvim-metals",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "saghen/blink.cmp",
+        },
+        ft = { "scala", "sbt", "java" },
+        opts = function()
+            local metals_config = require("metals").bare_config()
+            metals_config.capabilities = require("blink.cmp").get_lsp_capabilities()
+            metals_config.on_attach = function(client, bufnr)
+                onattach(client, bufnr)
+            end
+
+            return metals_config
+        end,
+        config = function(self, metals_config)
+            local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = self.ft,
+                callback = function()
+                    require("metals").initialize_or_attach(metals_config)
+                end,
+                group = nvim_metals_group,
             })
         end,
     },
