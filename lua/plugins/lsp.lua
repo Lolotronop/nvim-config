@@ -50,7 +50,7 @@ return {
         config = function()
             vim.api.nvim_create_autocmd("LspAttach", {
                 group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
-                callback = function (event)
+                callback = function(event)
                     onattach(event.data.client_id, event.buf)
                 end,
             })
@@ -95,6 +95,17 @@ return {
                             end,
                         })
                     end,
+                },
+                vtsls = {
+                    settings = {
+                        typescript = {
+                            tsserver = {
+                                experimental = {
+                                    enableProjectDiagnostics = true,
+                                },
+                            },
+                        },
+                    },
                 },
             }
 
