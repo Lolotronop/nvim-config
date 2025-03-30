@@ -201,8 +201,6 @@ return {
                 desc = "Open parent directory",
             },
         },
-        -- Optional dependencies
-        dependencies = { "nvim-tree/nvim-web-devicons" },
     },
 
     {
