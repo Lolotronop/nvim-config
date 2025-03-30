@@ -217,7 +217,10 @@ return {
 
     {
         "saghen/blink.cmp",
-        dependencies = "rafamadriz/friendly-snippets",
+        dependencies = {
+            "rafamadriz/friendly-snippets",
+            "echasnovski/mini.nvim",
+        },
         version = "1.*",
 
         ---@module 'blink.cmp'
@@ -227,6 +230,28 @@ return {
                 menu = {
                     -- TODO: fix transparency on completion menu
                     winblend = 0,
+                    draw = {
+                        components = {
+                            kind_icon = {
+                                text = function(ctx)
+                                    local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
+                                    return kind_icon
+                                end,
+                                -- (optional) use highlights from mini.icons
+                                highlight = function(ctx)
+                                    local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+                                    return hl
+                                end,
+                            },
+                            kind = {
+                                -- (optional) use highlights from mini.icons
+                                highlight = function(ctx)
+                                    local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+                                    return hl
+                                end,
+                            },
+                        },
+                    },
                 },
                 accept = {
                     auto_brackets = {
