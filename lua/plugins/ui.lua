@@ -43,7 +43,7 @@ return {
                 end,
             },
             { "nvim-telescope/telescope-ui-select.nvim" },
-            { "nvim-tree/nvim-web-devicons" },
+            -- { "nvim-tree/nvim-web-devicons" },
         },
         config = function()
             local actions = require("telescope.actions")
@@ -112,6 +112,8 @@ return {
 
             vim.cmd("highlight! SnacksIndentScope guifg=#665c54 ctermbg=NONE")
             vim.cmd("highlight! SnacksIndent guifg=#282828 ctermbg=NONE")
+
+            vim.cmd("highlight! MiniIconsAzure guifg=#2f74c0 ctermbg=NONE")
 
             vim.cmd("highlight! clear SpellBad")
             vim.cmd("highlight! clear SpellCap")
@@ -186,6 +188,7 @@ return {
 
     {
         "stevearc/oil.nvim",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
         lazy = false,
         opts = {
             keymaps = {
@@ -202,6 +205,8 @@ return {
             },
         },
     },
+
+    { "nvim-tree/nvim-web-devicons", opt = {} },
 
     {
         "folke/snacks.nvim",

@@ -15,13 +15,14 @@ vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action
 vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 vim.keymap.set("n", "<leader>cl", "<cmd>LspInfo<cr>", { desc = "Lsp Info" })
 
-vim.keymap.set({"n", "v"}, "P", '"+p', { desc = "Paste from clipboard" })
-vim.keymap.set({"n", "v"}, "Y", '"+y', { desc = "Copy to clipboard" })
+vim.keymap.set({ "n", "v" }, "P", '"+p', { desc = "Paste from clipboard" })
+vim.keymap.set({ "n", "v" }, "Y", '"+y', { desc = "Copy to clipboard" })
 
 vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Goto Declaration" })
 
 vim.keymap.set("n", "<leader>e", function()
-    local ok, res = pcall(vim.cmd, "Rex")
+    ---@diagnostic disable-next-line: param-type-mismatch
+    local ok, _ = pcall(vim.cmd, "Rex")
     if not ok then
         vim.cmd([[Ex]])
     end
@@ -30,8 +31,16 @@ end, { desc = "Open file explorer" })
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 -- Diagnostic keyvim.keymap.sets
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
+vim.keymap.set("n", "[d", function()
+    vim.diagnostic.jump({
+        diagnostic = vim.diagnostic.get_next(),
+    })
+end, { desc = "Go to previous [D]iagnostic message" })
+vim.keymap.set("n", "]d", function()
+    vim.diagnostic.jump({
+        diagnostic = vim.diagnostic.get_prev(),
+    })
+end, { desc = "Go to next [D]iagnostic message" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
