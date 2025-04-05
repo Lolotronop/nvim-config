@@ -32,13 +32,21 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 -- Diagnostic keyvim.keymap.sets
 vim.keymap.set("n", "[d", function()
+    local diagnostic = vim.diagnostic.get_next()
+    if not diagnostic then
+        return
+    end
     vim.diagnostic.jump({
-        diagnostic = vim.diagnostic.get_next(),
+        diagnostic = diagnostic,
     })
 end, { desc = "Go to previous [D]iagnostic message" })
 vim.keymap.set("n", "]d", function()
+    local diagnostic = vim.diagnostic.get_prev()
+    if not diagnostic then
+        return
+    end
     vim.diagnostic.jump({
-        diagnostic = vim.diagnostic.get_prev(),
+        diagnostic = diagnostic,
     })
 end, { desc = "Go to next [D]iagnostic message" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
