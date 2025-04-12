@@ -12,7 +12,7 @@ vim.keymap.set("i", "<c-k>", vim.lsp.buf.signature_help, { desc = "Signature Hel
 vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
 
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Actions" })
-vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
+vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 vim.keymap.set("n", "<leader>cl", "<cmd>LspInfo<cr>", { desc = "Lsp Info" })
 
 vim.keymap.set({ "n", "v" }, "P", '"+p', { desc = "Paste from clipboard" })
