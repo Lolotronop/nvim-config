@@ -85,27 +85,36 @@ return {
                 },
                 svelte = {
                     -- Svelte lsp does not react to js/ts changes by default
-                    on_attach = function(client)
-                        vim.api.nvim_create_autocmd("BufWritePost", {
-                            pattern = { "*.js", "*.ts" },
-                            group = vim.api.nvim_create_augroup("lolo-svelte-lsp-fix", { clear = true }),
-                            callback = function(ctx)
-                                client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
-                            end,
-                        })
-                    end,
-                },
-                vtsls = {
-                    settings = {
-                        typescript = {
-                            tsserver = {
-                                experimental = {
-                                    enableProjectDiagnostics = true,
-                                },
-                            },
+                    -- on_attach = function(client, bufnr)
+                    --     if client.name == "svelte" then
+                    --         vim.api.nvim_create_autocmd("BufWritePre", {
+                    --             pattern = { "*.js", "*.ts" },
+                    --             group = vim.api.nvim_create_augroup("svelte_ondidchangetsorjsfile", { clear = true }),
+                    --             callback = function(ctx)
+                    --                 -- Here use ctx.match instead of ctx.file
+                    --                 client:notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
+                    --                 print("svelte onDidChangeTsOrJsFile")
+                    --             end,
+                    --         })
+                    --     end
+                    -- end,
+                    capabilities = {
+                        workspace = {
+                            didChangeWatchedFiles = false,
                         },
                     },
                 },
+                -- vtsls = {
+                --     settings = {
+                --         typescript = {
+                --             tsserver = {
+                --                 experimental = {
+                --                     enableProjectDiagnostics = true,
+                --                 },
+                --             },
+                --         },
+                --     },
+                -- },
             }
 
             require("mason").setup()
@@ -126,34 +135,26 @@ return {
                     end,
                 },
             })
-        end,
-    },
 
-    {
-        "scalameta/nvim-metals",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            "saghen/blink.cmp",
-        },
-        ft = { "scala", "sbt", "java" },
-        opts = function()
-            local metals_config = require("metals").bare_config()
-            metals_config.capabilities = require("blink.cmp").get_lsp_capabilities()
-            metals_config.on_attach = function(client, bufnr)
-                onattach(client, bufnr)
-            end
-
-            return metals_config
-        end,
-        config = function(self, metals_config)
-            local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
-            vim.api.nvim_create_autocmd("FileType", {
-                pattern = self.ft,
-                callback = function()
-                    require("metals").initialize_or_attach(metals_config)
-                end,
-                group = nvim_metals_group,
+            vim.lsp.config("ts_go_ls", {
+                cmd = { "/home/lolotronop/.nix-profile/bin/tsgo", "--lsp", "-stdio" },
+                filetypes = {
+                    "javascript",
+                    "javascriptreact",
+                    "javascript.jsx",
+                    "typescript",
+                    "typescriptreact",
+                    "typescript.tsx",
+                },
+                root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
             })
+
+            vim.api.nvim_create_user_command("TsgoOn", function(opts)
+                vim.lsp.enable("ts_go_ls")
+            end, { nargs = "*" })
+            vim.api.nvim_create_user_command("TsgoOff", function(opts)
+                vim.lsp.disable("ts_go_ls")
+            end, { nargs = "*" })
         end,
     },
 
@@ -173,11 +174,12 @@ return {
         },
         opts = {
             notify_on_error = true,
-            format_after_save = {
-                timeout_ms = 500,
-                lsp_fallback = true,
-                async = true,
-            },
+            format_after_save = false,
+            -- format_after_save = {
+            --     timeout_ms = 500,
+            --     lsp_fallback = true,
+            --     async = true,
+            -- },
             lsp_fallback = true,
             formatters_by_ft = {
                 lua = { "stylua" },
@@ -187,29 +189,6 @@ return {
                 svelte = { "prettierd", "prettier" },
                 css = { "prettierd" },
                 html = { "prettierd" },
-            },
-        },
-    },
-
-    {
-        "laytan/tailwind-sorter.nvim",
-        enabled = false,
-        dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-lua/plenary.nvim" },
-        build = "cd formatter && npm ci && npm run build",
-        event = "VeryLazy",
-        config = {
-            on_save_enabled = true,
-            on_save_pattern = {
-                "*.html",
-                "*.js",
-                "*.jsx",
-                "*.tsx",
-                "*.twig",
-                "*.hbs",
-                "*.php",
-                "*.heex",
-                "*.astro",
-                "*.svelte",
             },
         },
     },
@@ -319,7 +298,8 @@ return {
                 ensure_installed = { "lua" },
                 auto_install = true,
                 highlight = { enable = true },
-                indent = { enable = true },
+                -- disabled because js method chaining is working correctly
+                indent = { enable = true, disable = { "typescript", "javascript" } },
                 incremental_selection = {
                     enable = true,
                     keymaps = {
