@@ -4,13 +4,13 @@ local onattach = function(client_id, buf)
     end
 
     map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-    map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+    map("grr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
     map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
     map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
 
     map("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
 
-    map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+    -- map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
     map("<leader>cs", require("telescope.builtin").spell_suggest, "[C]ode [S]pell")
     map("<leader>ce", require("telescope.builtin").diagnostics, "[C]ode [E]rors")
 
@@ -36,7 +36,7 @@ local onattach = function(client_id, buf)
 end
 
 return {
-    { -- LSP Configuration & Plugins
+    {
         "neovim/nvim-lspconfig",
         dependencies = {
             "williamboman/mason.nvim",
@@ -61,100 +61,15 @@ return {
                 },
             })
 
-            local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities = vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities())
-
-            local servers = {
-                lua_ls = {
-                    settings = {
-                        Lua = {
-                            runtime = { version = "LuaJIT" },
-                            workspace = {
-                                checkThirdParty = false,
-                                library = {
-                                    "${3rd}/luv/library",
-                                    unpack(vim.api.nvim_get_runtime_file("", true)),
-                                },
-                            },
-                            completion = {
-                                callSnippet = "Replace",
-                            },
-                            diagnostics = { disable = { "missing-fields" } },
-                        },
-                    },
-                },
-                svelte = {
-                    -- Svelte lsp does not react to js/ts changes by default
-                    -- on_attach = function(client, bufnr)
-                    --     if client.name == "svelte" then
-                    --         vim.api.nvim_create_autocmd("BufWritePre", {
-                    --             pattern = { "*.js", "*.ts" },
-                    --             group = vim.api.nvim_create_augroup("svelte_ondidchangetsorjsfile", { clear = true }),
-                    --             callback = function(ctx)
-                    --                 -- Here use ctx.match instead of ctx.file
-                    --                 client:notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
-                    --                 print("svelte onDidChangeTsOrJsFile")
-                    --             end,
-                    --         })
-                    --     end
-                    -- end,
-                    capabilities = {
-                        workspace = {
-                            didChangeWatchedFiles = false,
-                        },
-                    },
-                },
-                -- vtsls = {
-                --     settings = {
-                --         typescript = {
-                --             tsserver = {
-                --                 experimental = {
-                --                     enableProjectDiagnostics = true,
-                --                 },
-                --             },
-                --         },
-                --     },
-                -- },
-            }
-
             require("mason").setup()
-
-            local ensure_installed = vim.tbl_keys(servers or {})
-            vim.list_extend(ensure_installed, {
-                "stylua",
-            })
-
-            require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
-
+            require("mason-tool-installer").setup({})
             require("mason-lspconfig").setup({
                 handlers = {
                     function(server_name)
-                        local server = servers[server_name] or {}
-                        server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-                        require("lspconfig")[server_name].setup(server)
+                        vim.lsp.enable(server_name)
                     end,
                 },
             })
-
-            vim.lsp.config("ts_go_ls", {
-                cmd = { "/home/lolotronop/.nix-profile/bin/tsgo", "--lsp", "-stdio" },
-                filetypes = {
-                    "javascript",
-                    "javascriptreact",
-                    "javascript.jsx",
-                    "typescript",
-                    "typescriptreact",
-                    "typescript.tsx",
-                },
-                root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
-            })
-
-            vim.api.nvim_create_user_command("TsgoOn", function(opts)
-                vim.lsp.enable("ts_go_ls")
-            end, { nargs = "*" })
-            vim.api.nvim_create_user_command("TsgoOff", function(opts)
-                vim.lsp.disable("ts_go_ls")
-            end, { nargs = "*" })
         end,
     },
 
@@ -174,12 +89,12 @@ return {
         },
         opts = {
             notify_on_error = true,
-            format_after_save = false,
-            -- format_after_save = {
-            --     timeout_ms = 500,
-            --     lsp_fallback = true,
-            --     async = true,
-            -- },
+            -- format_after_save = false,
+            format_after_save = {
+                timeout_ms = 500,
+                lsp_fallback = true,
+                async = true,
+            },
             lsp_fallback = true,
             formatters_by_ft = {
                 lua = { "stylua" },
@@ -267,7 +182,15 @@ return {
             },
 
             sources = {
-                default = { "lsp", "snippets", "path", "buffer" },
+                default = { "lazydev", "lsp", "snippets", "path", "buffer" },
+                providers = {
+                    lazydev = {
+                        name = "LazyDev",
+                        module = "lazydev.integrations.blink",
+                        -- make lazydev completions top priority (see `:h blink.cmp`)
+                        score_offset = 100,
+                    },
+                },
             },
 
             fuzzy = {
@@ -324,6 +247,16 @@ return {
     {
         "nvim-treesitter/nvim-treesitter-textobjects",
         dependencies = { "nvim-treesitter/nvim-treesitter" },
+    },
+
+    {
+        "folke/lazydev.nvim",
+        ft = "lua",
+        opts = {
+            library = {
+                { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+            },
+        },
     },
 
     {
