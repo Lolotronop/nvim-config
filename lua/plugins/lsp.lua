@@ -120,6 +120,9 @@ return {
         ---@type blink.cmp.Config
         opts = {
             completion = {
+                documentation = {
+                    auto_show = true,
+                },
                 menu = {
                     -- TODO: fix transparency on completion menu
                     winblend = 0,
