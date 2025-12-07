@@ -34,7 +34,6 @@ return {
         lazy = false,
         priority = 1000,
         config = function()
-            vim.g.gruvbox_baby_telescope_theme = 1
             vim.g.gruvbox_baby_keyword_style = "bold"
             vim.g.gruvbox_baby_comment_style = "altfont"
             vim.g.gruvbox_baby_background_color = "dark"
@@ -171,13 +170,15 @@ return {
             vim.keymap.set("n", "<leader>sh", Snacks.picker.help, { desc = "[S]earch [H]elp" })
             vim.keymap.set("n", "<leader>sk", Snacks.picker.keymaps, { desc = "[S]earch [K]eymaps" })
             vim.keymap.set("n", "<leader>sf", Snacks.picker.files, { desc = "[S]earch [F]iles" })
-            -- vim.keymap.set("n", "<leader>ss", Snacks.picker., { desc = "[S]earch [S]elect Telescope" })
             vim.keymap.set("n", "<leader>sw", Snacks.picker.grep_word, { desc = "[S]earch current [W]ord" })
             vim.keymap.set("n", "<leader>sg", Snacks.picker.grep, { desc = "[S]earch by [G]rep" })
-            vim.keymap.set("n", "<leader>sd", Snacks.picker.diagnostics, { desc = "[S]earch [D]iagnostics" })
+            vim.keymap.set("n", "<leader>sd", Snacks.picker.diagnostics_buffer, { desc = "[S]earch [D]iagnostics" })
+            vim.keymap.set("n", "<leader>sD", Snacks.picker.diagnostics, { desc = "[S]earch [D]iagnostics all" })
             vim.keymap.set("n", "<leader>sr", Snacks.picker.resume, { desc = "[S]earch [R]esume" })
-            -- vim.keymap.set("n", "<leader>s.", Snacks.picker.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-            -- vim.keymap.set("n", "<leader><leader>", Snacks.picker.buffers, { desc = "[ ] Find existing buffers" })
+            vim.keymap.set("n", "<leader>sr", Snacks.picker.resume, { desc = "[S]earch [R]esume" })
+            vim.keymap.set("n", "grr", Snacks.picker.lsp_references)
+            vim.keymap.set("n", "gd", Snacks.picker.lsp_definitions)
+            vim.keymap.set("n", "cs", Snacks.picker.spelling)
         end,
     },
 

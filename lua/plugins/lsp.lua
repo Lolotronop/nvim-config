@@ -3,17 +3,6 @@ local onattach = function(client_id, buf)
         vim.keymap.set("n", keys, func, { buffer = buf, desc = "LSP: " .. desc })
     end
 
-    map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-    map("grr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-    map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-    map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
-
-    map("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
-
-    -- map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
-    map("<leader>cs", require("telescope.builtin").spell_suggest, "[C]ode [S]pell")
-    map("<leader>ce", require("telescope.builtin").diagnostics, "[C]ode [E]rors")
-
     map("K", vim.lsp.buf.hover, "Hover Documentation")
 
     map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
