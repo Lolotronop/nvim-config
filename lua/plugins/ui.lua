@@ -158,7 +158,10 @@ return {
                 picker = {
                     enabled = true,
                     layout = {
-                        width = 1,
+                        layout = { -- the layout itself
+                            width = 0.9, -- 0 is max
+                            height = 0.9,
+                        },
                     },
                 },
             }
