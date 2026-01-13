@@ -15,6 +15,12 @@ vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 vim.keymap.set("n", "<leader>cl", "<cmd>LspInfo<cr>", { desc = "Lsp Info" })
 
+vim.keymap.set("v", "<leader>r", 'y:%s/\\V<C-r>"//g<Left><Left>', {
+    noremap = true,
+    silent = false,
+    desc = "Replace visual selection in whole file",
+})
+
 vim.keymap.set({ "n", "v" }, "P", '"+p', { desc = "Paste from clipboard" })
 vim.keymap.set({ "n", "v" }, "Y", '"+y', { desc = "Copy to clipboard" })
 

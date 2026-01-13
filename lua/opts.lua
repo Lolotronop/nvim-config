@@ -202,4 +202,4 @@ local function open_all_ts_and_svelte()
     print(#files .. " files loaded into buffers and added to arglist")
 end
 
-vim.api.nvim_create_user_command("opents", open_all_ts_and_svelte, {})
+vim.api.nvim_create_user_command("Opents", open_all_ts_and_svelte, {})
