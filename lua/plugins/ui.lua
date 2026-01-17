@@ -169,6 +169,16 @@ return {
                 require("snacks").notifier.show_history()
             end, { desc = "Snack" })
 
+            vim.keymap.set("v", "<leader>s", function()
+                vim.cmd('normal! "zy')
+                local selection = vim.fn.getreg("z")
+                selection = selection:gsub("\n+$", ""):gsub("^%s+", ""):gsub("%s+$", "")
+                Snacks.picker.grep()
+                vim.schedule(function()
+                    vim.api.nvim_feedkeys(selection, "n", false)
+                end)
+            end, { desc = "Search for selected text with grep" })
+
             vim.keymap.set("n", "<leader>sh", Snacks.picker.help, { desc = "[S]earch [H]elp" })
             vim.keymap.set("n", "<leader>sk", Snacks.picker.keymaps, { desc = "[S]earch [K]eymaps" })
             vim.keymap.set("n", "<leader>sf", Snacks.picker.files, { desc = "[S]earch [F]iles" })

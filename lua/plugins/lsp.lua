@@ -121,7 +121,7 @@ return {
                                 text = function(ctx)
                                     -- good lsps render the actual color when needed
                                     -- but mini icons ignore that. so we leave it be
-                                    if (ctx.kind == "Color") then
+                                    if ctx.kind == "Color" then
                                         return ctx.kind_icon
                                     end
                                     local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
@@ -129,7 +129,7 @@ return {
                                 end,
                                 -- (optional) use highlights from mini.icons
                                 highlight = function(ctx)
-                                    if (ctx.kind == "Color") then
+                                    if ctx.kind == "Color" then
                                         return ctx.kind_hl
                                     end
                                     local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
