@@ -129,4 +129,12 @@ return {
             vim.g.undotree_SetFocusWhenToggle = 1
         end,
     },
+
+    {
+        "stevearc/quicker.nvim",
+        ft = "qf",
+        ---@module "quicker"
+        ---@type quicker.SetupOptions
+        opts = {},
+    },
 }

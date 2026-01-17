@@ -24,7 +24,9 @@ vim.keymap.set("v", "<leader>r", 'y:%s/\\V<C-r>"//g<Left><Left>', {
 vim.keymap.set({ "n", "v" }, "P", '"+p', { desc = "Paste from clipboard" })
 vim.keymap.set({ "n", "v" }, "Y", '"+y', { desc = "Copy to clipboard" })
 
-vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Goto Declaration" })
+-- quickfix list
+vim.keymap.set("n", "<M-l>", "<cmd>cnext<CR>", { desc = "Next [L]ist" })
+vim.keymap.set("n", "<M-h>", "<cmd>cprevious<CR>", { desc = "Previous [L]ist" })
 
 vim.keymap.set("n", "<leader>e", function()
     ---@diagnostic disable-next-line: param-type-mismatch
