@@ -214,6 +214,10 @@ return {
 
     {
         "nvim-treesitter/nvim-treesitter",
+        -- TODO: figure out how to live with the main branch that
+        -- is not deprecated
+        branch = "master",
+        lazy = false,
         build = ":TSUpdate",
         config = function()
             ---@diagnostic disable-next-line: missing-fields
