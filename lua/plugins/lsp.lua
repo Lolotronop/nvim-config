@@ -59,6 +59,8 @@ return {
                     end,
                 },
             })
+
+            vim.lsp.enable("rust_analyzer")
         end,
     },
 
@@ -162,6 +164,7 @@ return {
             keymap = {
                 preset = "default",
                 ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+                ["<C-p>"] = { "show", "show_documentation", "hide_documentation" },
                 ["<C-e>"] = { "hide" },
                 ["<CR>"] = { "accept", "fallback" },
                 ["<C-y>"] = { "select_and_accept" },
