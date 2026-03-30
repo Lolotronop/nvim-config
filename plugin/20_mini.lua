@@ -11,18 +11,32 @@ require("mini.diff").setup({
         signs = { add = '+', change = '~', delete = '-' },
     }
 })
-
 require("mini.git").setup()
 
-local spec_treesitter = require("mini.ai").gen_spec.treesitter
-require("mini.ai").setup({
+require("mini.pairs").setup({
+    modes = { insert = true, command = true, terminal = false },
+    -- skip autopair when next character is one of these
+    skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
+    -- skip autopair when the cursor is inside these treesitter nodes
+    skip_ts = { "string" },
+    -- skip autopair when next character is closing pair
+    -- and there are more closing pairs than opening pairs
+    skip_unbalanced = true,
+    -- better deal with markdown code blocks
+    markdown = true,
+})
+
+local ai = require("mini.ai")
+ai.setup({
     n_lines = 500,
     custom_textobjects = {
-        f = spec_treesitter({ a = "@function.outer", i = "@function.inner" }),
-        o = spec_treesitter({
-            a = { "@conditional.outer", "@loop.outer" },
-            i = { "@conditional.inner", "@loop.inner" },
+        o = ai.gen_spec.treesitter({ -- code block
+            a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+            i = { "@block.inner", "@conditional.inner", "@loop.inner" },
         }),
+        f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }), -- function
+        c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),       -- class
+        t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },           -- tags
     },
 })
 
