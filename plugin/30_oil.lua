@@ -1,7 +1,7 @@
 vim.pack.add({
 	"https://github.com/stevearc/oil.nvim",
 })
--- dependencies = { "nvim-tree/nvim-web-devicons" },
+
 require("oil").setup({
 	keymaps = {
 		["h"] = "actions.parent",
@@ -14,5 +14,5 @@ vim.keymap.set(
 	"n",
 	"<leader>e",
 	"<CMD>Oil<CR>",
-	{desc = "Open parent directory"}
+	{ desc = "Open parent directory" }
 )
