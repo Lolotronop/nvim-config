@@ -4,6 +4,9 @@ vim.pack.add({
 })
 
 require('mini.basics').setup()
+require("mini.icons").setup()
+MiniIcons.mock_nvim_web_devicons()
+
 
 local mini_loaded = false
 
@@ -63,9 +66,6 @@ local function load_mini()
             suffix_next = "n",     -- Suffix to search with "next" method
         },
     })
-
-    require("mini.icons").setup()
-    MiniIcons.mock_nvim_web_devicons()
 
     -- TODO: maybe set it up?
     require("mini.statusline").setup()
