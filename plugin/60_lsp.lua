@@ -12,19 +12,36 @@ vim.filetype.add({
 	},
 })
 
-require("mason").setup()
-require("mason-tool-installer").setup({
-	ensure_installed = {}
-})
-require("mason-lspconfig").setup({
-	handlers = {
-		function(server_name)
-			vim.lsp.enable(server_name)
-		end,
-	},
-})
+local lsp_loaded = false
 
-vim.lsp.enable("rust_analyzer")
+local function load_lsp()
+	if lsp_loaded then
+		return
+	end
+	lsp_loaded = true
+
+	require("mason").setup()
+	require("mason-tool-installer").setup({
+		ensure_installed = {}
+	})
+	require("mason-lspconfig").setup({
+		handlers = {
+			function(server_name)
+				vim.lsp.enable(server_name)
+			end,
+		},
+	})
+
+	vim.lsp.enable("rust_analyzer")
+end
+
+vim.api.nvim_create_autocmd("UIEnter", {
+	group = vim.api.nvim_create_augroup("myconf_load_lsp", { clear = true }),
+	once = true,
+	callback = function()
+		vim.defer_fn(load_lsp, 100)
+	end,
+})
 
 
 local onattach = function(client_id, buf)

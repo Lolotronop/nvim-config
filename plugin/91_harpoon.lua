@@ -2,14 +2,35 @@ vim.pack.add({
     "https://github.com/cbochs/grapple.nvim",
 })
 
-require("grapple").setup({
-    scope = "git",
-    icons = true,
-    status = false,
-})
+local grapple_loaded = false
 
-vim.keymap.set("n", "<leader>m", function() require("grapple").toggle() end, { desc = "[M]ark for grapple" })
-vim.keymap.set("n", "<leader>h", function() require("grapple").toggle_tags() end, { desc = "[H]arpoon (grapple)" })
+local function load_grapple()
+    if grapple_loaded then
+        return
+    end
+    grapple_loaded = true
 
-vim.keymap.set("n", "H", function() require("grapple").cycle_tags("prev") end)
-vim.keymap.set("n", "L", function() require("grapple").cycle_tags("next") end)
+    require("grapple").setup({
+        scope = "git",
+        icons = true,
+        status = false,
+    })
+end
+
+vim.keymap.set("n", "<leader>m", function()
+    load_grapple()
+    require("grapple").toggle()
+end, { desc = "[M]ark for grapple" })
+vim.keymap.set("n", "<leader>h", function()
+    load_grapple()
+    require("grapple").toggle_tags()
+end, { desc = "[H]arpoon (grapple)" })
+
+vim.keymap.set("n", "H", function()
+    load_grapple()
+    require("grapple").cycle_tags("prev")
+end)
+vim.keymap.set("n", "L", function()
+    load_grapple()
+    require("grapple").cycle_tags("next")
+end)

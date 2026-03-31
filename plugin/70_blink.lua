@@ -5,118 +5,136 @@ vim.pack.add({
 	}
 })
 
-local thing = 12
+local blink_loaded = false
+local function load_blink()
+	if blink_loaded then
+		return
+	end
+	blink_loaded = true
 
-thing = 12 + thing
-
-require("blink.cmp").setup({
-	completion = {
-		documentation = {
-			auto_show = true,
-		},
-		menu = {
-			-- TODO: fix transparency on completion menu
-			winblend = 0,
-			draw = {
-				components = {
-					kind_icon = {
-						text = function(ctx)
-							-- good lsps render the actual color when needed
-							-- but mini icons ignore that. so we leave it be
-							if ctx.kind == "Color" then
-								return ctx.kind_icon
-							end
-							local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
-							return kind_icon
-						end,
-						-- (optional) use highlights from mini.icons
-						highlight = function(ctx)
-							if ctx.kind == "Color" then
-								return ctx.kind_hl
-							end
-							local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-							return hl
-						end,
-					},
-					kind = {
-						-- (optional) use highlights from mini.icons
-						highlight = function(ctx)
-							local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-							return hl
-						end,
+	require("blink.cmp").setup({
+		completion = {
+			documentation = {
+				auto_show = true,
+			},
+			menu = {
+				-- TODO: fix transparency on completion menu
+				winblend = 0,
+				draw = {
+					components = {
+						kind_icon = {
+							text = function(ctx)
+								-- good lsps render the actual color when needed
+								-- but mini icons ignore that. so we leave it be
+								if ctx.kind == "Color" then
+									return ctx.kind_icon
+								end
+								local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
+								return kind_icon
+							end,
+							-- (optional) use highlights from mini.icons
+							highlight = function(ctx)
+								if ctx.kind == "Color" then
+									return ctx.kind_hl
+								end
+								local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+								return hl
+							end,
+						},
+						kind = {
+							-- (optional) use highlights from mini.icons
+							highlight = function(ctx)
+								local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+								return hl
+							end,
+						},
 					},
 				},
 			},
-		},
-		accept = {
-			auto_brackets = {
-				enabled = true,
+			accept = {
+				auto_brackets = {
+					enabled = true,
+				},
+			},
+			list = {
+				selection = {
+					preselect = function(ctx)
+						return ctx.mode ~= "cmdline"
+					end,
+				},
 			},
 		},
-		list = {
-			selection = {
-				preselect = function(ctx)
-					return ctx.mode ~= "cmdline"
+		keymap = {
+			preset = "default",
+			["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+			["<C-p>"] = { "show", "show_documentation", "hide_documentation" },
+			["<C-e>"] = { "hide" },
+			["<CR>"] = { "accept", "fallback" },
+			["<C-y>"] = { "select_and_accept" },
+
+			["<C-j>"] = { "select_next", "fallback" },
+			["<C-k>"] = { "select_prev", "fallback" },
+
+			["<C-b>"] = { "scroll_documentation_up", "fallback" },
+			["<C-f>"] = { "scroll_documentation_down", "fallback" },
+
+			["<C-l>"] = { "snippet_forward", "fallback" },
+			["<C-h>"] = { "snippet_backward", "fallback" },
+		},
+
+		appearance = {
+			-- use_nvim_cmp_as_default = true,
+			nerd_font_variant = "mono",
+		},
+
+		sources = {
+			per_filetype = {
+				lua = {
+					"lazydev", "lsp", "snippets", "path", "buffer"
+				},
+			},
+			default = { "lsp", "snippets", "path", "buffer" },
+			providers = {
+				lazydev = {
+					name = "LazyDev",
+					module = "lazydev.integrations.blink",
+					-- make lazydev completions top priority (see `:h blink.cmp`)
+					score_offset = 100,
+				},
+			},
+		},
+
+		fuzzy = {
+			implementation = "prefer_rust_with_warning",
+
+			sorts = {
+				function(a, b)
+					if (a.client_name == nil or b.client_name == nil) or (a.client_name == b.client_name) then
+						return
+					end
+					return b.client_name == "emmet_ls"
 				end,
+				-- default sorts
+				"score",
+				"sort_text",
 			},
 		},
-	},
-	keymap = {
-		preset = "default",
-		["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
-		["<C-p>"] = { "show", "show_documentation", "hide_documentation" },
-		["<C-e>"] = { "hide" },
-		["<CR>"] = { "accept", "fallback" },
-		["<C-y>"] = { "select_and_accept" },
+	})
+end
 
-		["<C-j>"] = { "select_next", "fallback" },
-		["<C-k>"] = { "select_prev", "fallback" },
+local blink_group = vim.api.nvim_create_augroup("myconf_load_blink", { clear = true })
 
-		["<C-b>"] = { "scroll_documentation_up", "fallback" },
-		["<C-f>"] = { "scroll_documentation_down", "fallback" },
-
-		["<C-l>"] = { "snippet_forward", "fallback" },
-		["<C-h>"] = { "snippet_backward", "fallback" },
-	},
-
-	appearance = {
-		-- use_nvim_cmp_as_default = true,
-		nerd_font_variant = "mono",
-	},
-
-	sources = {
-		per_filetype = {
-			lua = {
-				"lazydev", "lsp", "snippets", "path", "buffer"
-			},
-		},
-		default = { "lsp", "snippets", "path", "buffer" },
-		providers = {
-			lazydev = {
-				name = "LazyDev",
-				module = "lazydev.integrations.blink",
-				-- make lazydev completions top priority (see `:h blink.cmp`)
-				score_offset = 100,
-			},
-		},
-	},
-
-	fuzzy = {
-		implementation = "prefer_rust_with_warning",
-
-		sorts = {
-			function(a, b)
-				if (a.client_name == nil or b.client_name == nil) or (a.client_name == b.client_name) then
-					return
-				end
-				return b.client_name == "emmet_ls"
-			end,
-			-- default sorts
-			"score",
-			"sort_text",
-		},
-	},
+vim.api.nvim_create_autocmd("InsertEnter", {
+	group = blink_group,
+	once = true,
+	callback = load_blink,
 })
+
+-- vim.api.nvim_create_autocmd("CmdlineEnter", {
+-- 	group = blink_group,
+-- 	once = true,
+-- 	callback = load_blink,
+-- })
 
 -- OR build from source
 -- local function build_blink(params)

@@ -2,11 +2,26 @@ vim.pack.add({
     "https://github.com/supermaven-inc/supermaven-nvim",
 })
 
-require("supermaven-nvim").setup({
-    disable_keymaps = true,
+local supermaven_loaded = false
+
+local function load_supermaven()
+    if supermaven_loaded then
+        return
+    end
+    supermaven_loaded = true
+
+    require("supermaven-nvim").setup({
+        disable_keymaps = true,
+    })
+end
+
+vim.api.nvim_create_autocmd("InsertEnter", {
+    group = vim.api.nvim_create_augroup("myconf_load_supermaven", { clear = true }),
+    once = true,
+    callback = load_supermaven,
 })
 
-local suggestion = require("supermaven-nvim.completion_preview")
 vim.keymap.set("i", "<c-g>", function()
-    suggestion.on_accept_suggestion()
+    load_supermaven()
+    require("supermaven-nvim.completion_preview").on_accept_suggestion()
 end)

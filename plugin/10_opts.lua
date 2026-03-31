@@ -3,6 +3,8 @@ vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
+vim.g.loaded_matchit = 1
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.opt.spell = true

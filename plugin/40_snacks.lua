@@ -76,7 +76,7 @@ vim.api.nvim_create_autocmd("LspProgress", {
 	callback = function(ev)
 		local client = vim.lsp.get_client_by_id(ev.data.client_id)
 		local value = ev.data.params
-		.value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
+			.value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
 		if not client or type(value) ~= "table" then
 			return
 		end
@@ -108,7 +108,7 @@ vim.api.nvim_create_autocmd("LspProgress", {
 			title = client.name,
 			opts = function(notif)
 				notif.icon = #progress[client.id] == 0 and " "
-						or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+					or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
 			end,
 		})
 	end,
