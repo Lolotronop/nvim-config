@@ -22,20 +22,14 @@ local opts = {
     },
 }
 
-
 local done = false
-vim.keymap.set(
-    "n",
-    "<leader>f",
-    function()
-        if not done then
-            require("conform").setup(opts)
-            done = true
-        end
-        require("conform").format({ async = true, lsp_fallback = true })
-    end,
-    { desc = "Format buffer" }
-)
+vim.keymap.set("n", "<leader>f", function()
+    if not done then
+        require("conform").setup(opts)
+        done = true
+    end
+    require("conform").format({ async = true, lsp_fallback = true })
+end, { desc = "Format buffer" })
 
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("myconf_load_conform", { clear = true }),

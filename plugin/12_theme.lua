@@ -1,5 +1,5 @@
 vim.pack.add({
-	"https://github.com/luisiacc/gruvbox-baby",
+    "https://github.com/luisiacc/gruvbox-baby",
 })
 
 vim.g.gruvbox_baby_keyword_style = "bold"
