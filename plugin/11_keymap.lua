@@ -26,3 +26,14 @@ vim.keymap.set("n", "<leader>rr", function()
     end
     vim.cmd("restart edit " .. vim.fn.fnameescape(name))
 end, { noremap = true, silent = true, desc = "Restart neovim" })
+
+local loaded_undotree = false
+vim.keymap.set("n", "<leader>u", function()
+    if not loaded_undotree then
+        vim.cmd("packadd nvim.undotree")
+        loaded_undotree = true
+    end
+    require("undotree").open({
+        command = math.floor(vim.api.nvim_win_get_width(0) / 3) .. "vnew",
+    })
+end, { desc = "[U]ndotree toggle" })
