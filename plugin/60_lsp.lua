@@ -46,6 +46,7 @@ vim.api.nvim_create_autocmd("UIEnter", {
 
 local onattach = function(client_id, buf)
     vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
+    vim.lsp.document_color.enable(true, nil, { style = "virtual" })
 
     local client = vim.lsp.get_client_by_id(client_id)
     if client and client.server_capabilities.documentHighlightProvider then
