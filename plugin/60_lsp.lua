@@ -33,6 +33,7 @@ local function load_lsp()
     })
 
     vim.lsp.enable("rust_analyzer")
+    vim.lsp.enable("ols")
 end
 
 vim.api.nvim_create_autocmd("UIEnter", {
