@@ -7,7 +7,7 @@ local opts = {
     bigfile = { enabled = true },
     indent = { enabled = true, char = "▏", animate = { enabled = false } },
     input = { enabled = true },
-    notifier = { enabled = true },
+    notifier = { enabled = true, margin = { right = math.floor(vim.api.nvim_win_get_width(0)) - 9 } },
     quickfile = { enabled = true },
     statuscolumn = { enabled = true },
     words = { enabled = true },
@@ -78,16 +78,20 @@ local function get_shell()
 end
 
 local shell = get_shell()
-local win = {
-    position = "right",
-    max_width = 70,
+
+---@type snacks.terminal.Opts
+local termopts = {
+    interactive = true,
+    shell = shell,
+    win = {
+        position = "right",
+        max_width = 70,
+    },
 }
 
-local termopts = { interactive = true, shell = shell, win = win }
-
 vim.keymap.set("n", "<leader>t", function()
-    local opts = vim.tbl_deep_extend("keep", termopts, { create = false })
-    local term = Snacks.terminal.get(shell, opts)
+    local termopts2 = vim.tbl_deep_extend("keep", termopts, { create = false })
+    local term = Snacks.terminal.get(shell, termopts2)
     if term == nil then
         return
     end
@@ -96,12 +100,12 @@ end, { desc = "Hide terminal" })
 
 vim.keymap.set("n", "<C-t>", function()
     Snacks.terminal.focus(shell, termopts)
-end)
+end, { desc = "Create/focus terminal" })
 
 vim.keymap.set("t", "<C-t>", function()
     ---@diagnostic disable-next-line: param-type-mismatch
     pcall(vim.cmd, "wincmd h")
-end)
+end, { desc = "Focus main window" })
 
 ---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
 local progress = vim.defaulttable()
