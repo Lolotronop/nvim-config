@@ -85,7 +85,7 @@ local win = {
 
 local termopts = { interactive = true, shell = shell, win = win }
 
-vim.keymap.set({ "n" }, "<leader>t", function()
+vim.keymap.set("n", "<leader>t", function()
     local opts = vim.tbl_deep_extend("keep", termopts, { create = false })
     local term = Snacks.terminal.get(shell, opts)
     if term == nil then
@@ -94,11 +94,11 @@ vim.keymap.set({ "n" }, "<leader>t", function()
     term:hide()
 end, { desc = "Hide terminal" })
 
-vim.keymap.set({ "n" }, "<C-t>", function()
+vim.keymap.set("n", "<C-t>", function()
     Snacks.terminal.focus(shell, termopts)
 end)
 
-vim.keymap.set({ "t" }, "<C-t>", function()
+vim.keymap.set("t", "<C-t>", function()
     ---@diagnostic disable-next-line: param-type-mismatch
     pcall(vim.cmd, "wincmd h")
 end)
