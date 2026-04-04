@@ -98,6 +98,15 @@ vim.keymap.set("n", "<leader>t", function()
     term:hide()
 end, { desc = "Hide terminal" })
 
+vim.keymap.set("n", "<leader>T", function()
+    local termopts2 = vim.tbl_deep_extend("keep", termopts, { create = false })
+    local term = Snacks.terminal.get(shell, termopts2)
+    if term == nil then
+        return
+    end
+    term:close({ buf = true })
+end, { desc = "Kill terminal" })
+
 vim.keymap.set("n", "<C-t>", function()
     Snacks.terminal.focus(shell, termopts)
 end, { desc = "Create/focus terminal" })
