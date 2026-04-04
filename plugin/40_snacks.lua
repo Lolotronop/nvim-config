@@ -69,6 +69,40 @@ vim.keymap.set("n", "<leader>l", function()
     })
 end, { desc = "[L]azyGit" })
 
+local function get_shell()
+    if vim.fn.executable("nu.exe") == 1 then
+        return "nu.exe"
+    end
+
+    return "fish"
+end
+
+local shell = get_shell()
+local win = {
+    position = "right",
+    max_width = 70,
+}
+
+local termopts = { interactive = true, shell = shell, win = win }
+
+vim.keymap.set({ "n" }, "<leader>t", function()
+    local opts = vim.tbl_deep_extend("keep", termopts, { create = false })
+    local term = Snacks.terminal.get(shell, opts)
+    if term == nil then
+        return
+    end
+    term:hide()
+end, { desc = "Hide terminal" })
+
+vim.keymap.set({ "n" }, "<C-t>", function()
+    Snacks.terminal.focus(shell, termopts)
+end)
+
+vim.keymap.set({ "t" }, "<C-t>", function()
+    ---@diagnostic disable-next-line: param-type-mismatch
+    pcall(vim.cmd, "wincmd h")
+end)
+
 ---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
 local progress = vim.defaulttable()
 vim.api.nvim_create_autocmd("LspProgress", {
