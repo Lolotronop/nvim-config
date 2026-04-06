@@ -89,23 +89,23 @@ local termopts = {
     },
 }
 
-vim.keymap.set("n", "<leader>t", function()
+vim.keymap.set("n", "<leader>th", function()
     local termopts2 = vim.tbl_deep_extend("keep", termopts, { create = false })
     local term = Snacks.terminal.get(shell, termopts2)
     if term == nil then
         return
     end
     term:hide()
-end, { desc = "Hide terminal" })
+end, { desc = "[T]erminal [H]ide" })
 
-vim.keymap.set("n", "<leader>T", function()
+vim.keymap.set("n", "<leader>tk", function()
     local termopts2 = vim.tbl_deep_extend("keep", termopts, { create = false })
     local term = Snacks.terminal.get(shell, termopts2)
     if term == nil then
         return
     end
     term:close({ buf = true })
-end, { desc = "Kill terminal" })
+end, { desc = "[T]erminal [K]ill" })
 
 vim.keymap.set("n", "<C-t>", function()
     Snacks.terminal.focus(shell, termopts)
@@ -115,6 +115,22 @@ vim.keymap.set("t", "<C-t>", function()
     ---@diagnostic disable-next-line: param-type-mismatch
     pcall(vim.cmd, "wincmd h")
 end, { desc = "Focus main window" })
+
+vim.keymap.set("n", "<leader>tr", function()
+    local term = Snacks.terminal.get(shell, termopts)
+    if term == nil then
+        return
+    end
+
+    term:focus()
+    -- TODO: make ctrl-c work with nushell. it neesd a delay?
+    local keys = vim.api.nvim_replace_termcodes("<UP><CR>", true, false, true)
+    vim.api.nvim_feedkeys(keys, "t", false)
+    vim.defer_fn(function()
+        ---@diagnostic disable-next-line: param-type-mismatch
+        pcall(vim.cmd, "wincmd h")
+    end, 0)
+end, { desc = "[T]erminal [R]re-run" })
 
 ---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
 local progress = vim.defaulttable()
