@@ -7,6 +7,22 @@ require("mini.basics").setup()
 require("mini.icons").setup()
 MiniIcons.mock_nvim_web_devicons()
 
+require("mini.files").setup({
+    mappings = {
+        go_in = "L",
+        go_in_plus = "l",
+    },
+    windows = {
+        preview = true,
+        width_preview = 50,
+    },
+})
+
+vim.keymap.set("n", "<leader>e", function()
+    -- MiniFiles.open()
+    MiniFiles.open(vim.api.nvim_buf_get_name(0))
+end, { desc = "[E]xplorer files" })
+
 local mini_loaded = false
 
 local function load_mini()
@@ -69,12 +85,10 @@ local function load_mini()
     local statusline = function()
         local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
         local git = MiniStatusline.section_git({ trunc_width = 40 })
-        local diff = MiniStatusline.section_diff({ trunc_width = 75 })
         local diagnostics = MiniStatusline.section_diagnostics({
             trunc_width = 75,
             signs = { ERROR = " ", WARN = " ", HINT = " ", INFO = " " },
         })
-        local lsp = MiniStatusline.section_lsp({ trunc_width = 75 })
         local filename = MiniStatusline.section_filename({ trunc_width = 140 })
         local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 120 })
         local location = MiniStatusline.section_location({ trunc_width = 75 })
@@ -144,6 +158,7 @@ local function load_mini()
 
         window = {
             delay = 500,
+            width = "auto",
         },
     })
 end
