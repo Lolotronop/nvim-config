@@ -70,6 +70,10 @@ vim.keymap.set("n", "<leader>l", function()
 end, { desc = "[L]azyGit" })
 
 local function get_shell()
+    if vim.fn.executable("fish") == 1 then
+        return "fish"
+    end
+
     if vim.fn.executable("nu.exe") == 1 then
         return "nu.exe"
     end
