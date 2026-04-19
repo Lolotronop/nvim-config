@@ -66,6 +66,8 @@ local function load_mini()
         },
     })
 
+    require("mini.align").setup()
+
     require("mini.surround").setup({
         mappings = {
             add = "sa",
