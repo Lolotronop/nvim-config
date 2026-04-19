@@ -9,6 +9,7 @@ vim.filetype.add({
     extension = {
         postcss = "css",
         pcss = "css",
+        jai = "jai",
     },
 })
 
