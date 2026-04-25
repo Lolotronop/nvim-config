@@ -71,6 +71,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 
+-- windows things:
 -- svelte lsp gets confused over paths being slightly different
 -- this normalizes the buffer name to be consistent
 local function normpath(path)
@@ -78,11 +79,10 @@ local function normpath(path)
         return path
     end
     path = vim.fs.normalize(path)
-    path = path:gsub("\\", "/")
-    if path:match("^%a:") then
-        path = path:sub(1, 1):lower() .. path:sub(2)
+    if vim.fn.has("win32") then
+        path = path:gsub("/", "\\")
     end
-    return path:lower()
+    return path
 end
 
 local function normalize_buffer_name(bufnr)
