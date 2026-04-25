@@ -32,6 +32,32 @@ local function load_lsp()
             end,
         },
     })
+
+    local util = require("lspconfig.util")
+
+    vim.lsp.config("svelte", {
+        root_dir = function(bufnr, on_dir)
+            local fname = vim.api.nvim_buf_get_name(bufnr)
+            local root = util.root_pattern(
+                "svelte.config.js",
+                "svelte.config.ts",
+                "tsconfig.json",
+                "jsconfig.json",
+                "package.json"
+            )(fname)
+            on_dir(root or vim.fn.getcwd())
+        end,
+        single_file_support = false,
+    })
+
+    vim.lsp.config("vtsls", {
+        root_dir = function(bufnr, on_dir)
+            local fname = vim.api.nvim_buf_get_name(bufnr)
+            local root = util.root_pattern("tsconfig.json", "jsconfig.json", "package.json")(fname)
+            on_dir(root or vim.fn.getcwd())
+        end,
+        single_file_support = false,
+    })
 end
 
 vim.api.nvim_create_autocmd("UIEnter", {
