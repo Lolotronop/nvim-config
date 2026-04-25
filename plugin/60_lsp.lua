@@ -13,13 +13,13 @@ vim.filetype.add({
     },
 })
 
-local lsp_loaded = false
+vim.g.lolo_lsp_loaded = false
 
 local function load_lsp()
-    if lsp_loaded then
+    if vim.g.lolo_lsp_loaded then
         return
     end
-    lsp_loaded = true
+    vim.g.lolo_lsp_loaded = true
 
     require("mason").setup()
     require("mason-tool-installer").setup({
@@ -31,32 +31,6 @@ local function load_lsp()
                 vim.lsp.enable(server_name)
             end,
         },
-    })
-
-    local util = require("lspconfig.util")
-
-    vim.lsp.config("svelte", {
-        root_dir = function(bufnr, on_dir)
-            local fname = vim.api.nvim_buf_get_name(bufnr)
-            local root = util.root_pattern(
-                "svelte.config.js",
-                "svelte.config.ts",
-                "tsconfig.json",
-                "jsconfig.json",
-                "package.json"
-            )(fname)
-            on_dir(root or vim.fn.getcwd())
-        end,
-        single_file_support = false,
-    })
-
-    vim.lsp.config("vtsls", {
-        root_dir = function(bufnr, on_dir)
-            local fname = vim.api.nvim_buf_get_name(bufnr)
-            local root = util.root_pattern("tsconfig.json", "jsconfig.json", "package.json")(fname)
-            on_dir(root or vim.fn.getcwd())
-        end,
-        single_file_support = false,
     })
 end
 
@@ -70,9 +44,12 @@ vim.api.nvim_create_autocmd("UIEnter", {
 
 local onattach = function(client_id, buf)
     vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
-    vim.lsp.document_color.enable(true, nil, { style = "virtual" })
 
     local client = vim.lsp.get_client_by_id(client_id)
+    if client and client:supports_method("textDocument/documentColor") then
+        pcall(vim.lsp.document_color.enable, true, { bufnr = buf, id = client_id }, { style = "virtual" })
+    end
+
     if client and client.server_capabilities.documentHighlightProvider then
         vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
             buffer = buf,
@@ -90,5 +67,40 @@ vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
     callback = function(event)
         onattach(event.data.client_id, event.buf)
+    end,
+})
+
+
+-- svelte lsp gets confused over paths being slightly different
+-- this normalizes the buffer name to be consistent
+local function normpath(path)
+    if not path or path == "" then
+        return path
+    end
+    path = vim.fs.normalize(path)
+    path = path:gsub("\\", "/")
+    if path:match("^%a:") then
+        path = path:sub(1, 1):lower() .. path:sub(2)
+    end
+    return path:lower()
+end
+
+local function normalize_buffer_name(bufnr)
+    local name = vim.api.nvim_buf_get_name(bufnr)
+    if name == "" then
+        return
+    end
+
+    local real = vim.uv.fs_realpath(name) or name
+    local normalized = normpath(real)
+    if normalized ~= "" and normalized ~= name then
+        pcall(vim.api.nvim_buf_set_name, bufnr, normalized)
+    end
+end
+
+vim.api.nvim_create_autocmd("BufReadPost", {
+    group = vim.api.nvim_create_augroup("lolo_normalize_buffer_name", { clear = true }),
+    callback = function(event)
+        normalize_buffer_name(event.buf)
     end,
 })

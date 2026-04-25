@@ -23,13 +23,13 @@ vim.keymap.set("n", "<leader>e", function()
     MiniFiles.open(vim.api.nvim_buf_get_name(0))
 end, { desc = "[E]xplorer files" })
 
-local mini_loaded = false
+vim.g.lolo_mini_loaded = false
 
 local function load_mini()
-    if mini_loaded then
+    if vim.g.lolo_mini_loaded then
         return
     end
-    mini_loaded = true
+    vim.g.lolo_mini_loaded = true
 
     require("mini.diff").setup({
         view = {
@@ -61,8 +61,8 @@ local function load_mini()
                 i = { "@block.inner", "@conditional.inner", "@loop.inner" },
             }),
             f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }), -- function
-            c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }), -- class
-            t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- tags
+            c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),       -- class
+            t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },           -- tags
         },
     })
 
@@ -74,13 +74,13 @@ local function load_mini()
             delete = "sd",
             replace = "sr",
 
-            find = "sf", -- Find surrounding (to the right)
-            find_left = "sF", -- Find surrounding (to the left)
-            highlight = "sh", -- Highlight surrounding
+            find = "sf",           -- Find surrounding (to the right)
+            find_left = "sF",      -- Find surrounding (to the left)
+            highlight = "sh",      -- Highlight surrounding
             update_n_lines = "sn", -- Update `n_lines`
 
-            suffix_last = "l", -- Suffix to search with "prev" method
-            suffix_next = "n", -- Suffix to search with "next" method
+            suffix_last = "l",     -- Suffix to search with "prev" method
+            suffix_next = "n",     -- Suffix to search with "next" method
         },
     })
 
@@ -97,13 +97,13 @@ local function load_mini()
         local search = MiniStatusline.section_searchcount({ trunc_width = 75 })
 
         return MiniStatusline.combine_groups({
-            { hl = mode_hl, strings = { mode } },
+            { hl = mode_hl,                 strings = { mode } },
             { hl = "MiniStatuslineDevinfo", strings = { git } },
             "%<", -- Mark general truncate point
             { hl = "MiniStatuslineFilename", strings = { filename, diagnostics } },
             "%=", -- End left alignment
             { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
-            { hl = mode_hl, strings = { search, location } },
+            { hl = mode_hl,                  strings = { search, location } },
         })
     end
 
@@ -123,11 +123,11 @@ local function load_mini()
             { mode = { "n", "x" }, keys = "<Leader>" },
 
             -- `[` and `]` keys
-            { mode = "n", keys = "[" },
-            { mode = "n", keys = "]" },
+            { mode = "n",          keys = "[" },
+            { mode = "n",          keys = "]" },
 
             -- Built-in completion
-            { mode = "i", keys = "<C-x>" },
+            { mode = "i",          keys = "<C-x>" },
 
             -- `g` key
             { mode = { "n", "x" }, keys = "g" },
@@ -141,7 +141,7 @@ local function load_mini()
             { mode = { "i", "c" }, keys = "<C-r>" },
 
             -- Window commands
-            { mode = "n", keys = "<C-w>" },
+            { mode = "n",          keys = "<C-w>" },
 
             -- `z` key
             { mode = { "n", "x" }, keys = "z" },

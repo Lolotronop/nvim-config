@@ -2,13 +2,13 @@ vim.pack.add({
     "https://github.com/supermaven-inc/supermaven-nvim",
 })
 
-local supermaven_loaded = false
+vim.g.lolo_supermaven_loaded = false
 
 local function load_supermaven()
-    if supermaven_loaded then
+    if vim.g.lolo_supermaven_loaded then
         return
     end
-    supermaven_loaded = true
+    vim.g.lolo_supermaven_loaded = true
 
     require("supermaven-nvim").setup({
         disable_keymaps = true,

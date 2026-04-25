@@ -5,12 +5,12 @@ vim.pack.add({
     },
 })
 
-local blink_loaded = false
+vim.g.lolo_blink_loaded = false
 local function load_blink()
-    if blink_loaded then
+    if vim.g.lolo_blink_loaded then
         return
     end
-    blink_loaded = true
+    vim.g.lolo_blink_loaded = true
 
     require("blink.cmp").setup({
         completion = {

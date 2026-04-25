@@ -2,13 +2,13 @@ vim.pack.add({
     "https://github.com/cbochs/grapple.nvim",
 })
 
-local grapple_loaded = false
+vim.g.lolo_grapple_loaded = false
 
 local function load_grapple()
-    if grapple_loaded then
+    if vim.g.lolo_grapple_loaded then
         return
     end
-    grapple_loaded = true
+    vim.g.lolo_grapple_loaded = true
 
     require("grapple").setup({
         scope = "git",
