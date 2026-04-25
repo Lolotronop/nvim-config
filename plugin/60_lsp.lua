@@ -69,38 +69,3 @@ vim.api.nvim_create_autocmd("LspAttach", {
         onattach(event.data.client_id, event.buf)
     end,
 })
-
-
--- windows things:
--- svelte lsp gets confused over paths being slightly different
--- this normalizes the buffer name to be consistent
-local function normpath(path)
-    if not path or path == "" then
-        return path
-    end
-    path = vim.fs.normalize(path)
-    if vim.fn.has("win32") then
-        path = path:gsub("/", "\\")
-    end
-    return path
-end
-
-local function normalize_buffer_name(bufnr)
-    local name = vim.api.nvim_buf_get_name(bufnr)
-    if name == "" then
-        return
-    end
-
-    local real = vim.uv.fs_realpath(name) or name
-    local normalized = normpath(real)
-    if normalized ~= "" and normalized ~= name then
-        pcall(vim.api.nvim_buf_set_name, bufnr, normalized)
-    end
-end
-
-vim.api.nvim_create_autocmd("BufReadPost", {
-    group = vim.api.nvim_create_augroup("lolo_normalize_buffer_name", { clear = true }),
-    callback = function(event)
-        normalize_buffer_name(event.buf)
-    end,
-})

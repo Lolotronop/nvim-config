@@ -19,8 +19,16 @@ require("mini.files").setup({
 })
 
 vim.keymap.set("n", "<leader>e", function()
-    -- MiniFiles.open()
-    MiniFiles.open(vim.api.nvim_buf_get_name(0))
+    local path = vim.api.nvim_buf_get_name(0)
+    if vim.fn.has("win32") then
+        -- make the drive letter lowercase
+        -- because for whatever reason, leaving it uppercase
+        -- causes mini.files to open the file a D:\\file indtead of D:\file
+        -- causing svelte lsp to fail
+        -- ugh
+        path = path:sub(1, 1):lower() .. path:sub(2)
+    end
+    MiniFiles.open(path)
 end, { desc = "[E]xplorer files" })
 
 vim.g.lolo_mini_loaded = false
