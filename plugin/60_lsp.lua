@@ -44,6 +44,8 @@ vim.api.nvim_create_autocmd("UIEnter", {
 
 local onattach = function(client_id, buf)
     vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
+    vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, { desc = "Signature Help" })
+    vim.keymap.set("n", "gk", vim.lsp.buf.signature_help, { desc = "Signature Help" })
 
     local client = vim.lsp.get_client_by_id(client_id)
     if client and client:supports_method("textDocument/documentColor") then
