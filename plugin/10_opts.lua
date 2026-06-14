@@ -42,10 +42,15 @@ vim.opt.showcmd = false
 vim.opt.swapfile = false
 vim.opt.shada = { "'10", "<0", "s10", "h" }
 
-local cwd_file = vim.fn.getcwd() .. "/nvim.lua"
-if vim.fn.filereadable(cwd_file) == 1 then
-    vim.cmd("luafile " .. vim.fn.fnameescape(cwd_file))
-end
+vim.api.nvim_create_autocmd("DirChanged", {
+    group = vim.api.nvim_create_augroup("myconf_load_dirconf", { clear = true }),
+    callback = function()
+        local cwd_file = vim.fn.getcwd() .. "/nvim.lua"
+        if vim.fn.filereadable(cwd_file) == 1 then
+            vim.cmd("luafile " .. vim.fn.fnameescape(cwd_file))
+        end
+    end,
+})
 
 vim.api.nvim_create_autocmd("BufReadPost", {
     group = vim.api.nvim_create_augroup("myconf_jumplast", { clear = true }),
@@ -81,12 +86,3 @@ require("vim._core.ui2").enable({
         },
     },
 })
-
-if vim.g.neovide then
-    vim.o.guifont = "IosevkaTerm Nerd Font:h14"
-    vim.g.neovide_padding_top = 22
-    vim.g.neovide_padding_bottom = 0
-    vim.g.neovide_padding_right = 0
-    vim.g.neovide_padding_left = 0
-    vim.g.neovide_scroll_animation_length = 0.1
-end

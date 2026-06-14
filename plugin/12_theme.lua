@@ -6,9 +6,23 @@ vim.g.gruvbox_baby_keyword_style = "bold"
 vim.g.gruvbox_baby_comment_style = "altfont"
 
 vim.g.gruvbox_baby_background_color = "dark"
+vim.g.gruvbox_baby_transparent_mode = 1
 
-if not vim.g.neovide then
-    vim.g.gruvbox_baby_transparent_mode = 1
+if vim.g.neovide then
+    -- local colors = require("gruvbox-baby.colors").config()
+    -- vim.g.gruvbox_baby_highlights = { Normal = { fg = colors.foreground, bg = "#101010" } }
+    vim.g.neovide_normal_opacity = 0.8
+    vim.g.neovide_title_background_color = string.format(
+        "%x",
+        vim.api.nvim_get_hl(0, { id = vim.api.nvim_get_hl_id_by_name("Normal") }).bg
+    )
+
+    vim.o.guifont = "IosevkaTerm Nerd Font:h14"
+    vim.g.neovide_padding_top = 22
+    vim.g.neovide_padding_bottom = 0
+    vim.g.neovide_padding_right = 0
+    vim.g.neovide_padding_left = 0
+    vim.g.neovide_scroll_animation_length = 0.1
 end
 
 require("gruvbox-baby")
