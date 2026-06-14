@@ -42,10 +42,10 @@ vim.opt.showcmd = false
 vim.opt.swapfile = false
 vim.opt.shada = { "'10", "<0", "s10", "h" }
 
-vim.api.nvim_create_autocmd("DirChanged", {
+vim.api.nvim_create_autocmd({ "DirChanged", "VimEnter" }, {
     group = vim.api.nvim_create_augroup("myconf_load_dirconf", { clear = true }),
     callback = function()
-        local cwd_file = vim.fn.getcwd() .. "/nvim.lua"
+        local cwd_file = vim.fs.joinpath(vim.fn.getcwd(), "nvim.lua")
         if vim.fn.filereadable(cwd_file) == 1 then
             vim.cmd("luafile " .. vim.fn.fnameescape(cwd_file))
         end
