@@ -14,7 +14,7 @@ local opts = {
     picker = {
         enabled = true,
         layout = {
-            layout = { -- the layout itself
+            layout = {       -- the layout itself
                 width = 0.9, -- 0 is max
                 height = 0.9,
             },
@@ -46,7 +46,49 @@ vim.keymap.set("n", "<leader>sg", Snacks.picker.grep, { desc = "[S]earch by [G]r
 vim.keymap.set("n", "<leader>sd", Snacks.picker.diagnostics_buffer, { desc = "[S]earch [D]iagnostics" })
 vim.keymap.set("n", "<leader>sD", Snacks.picker.diagnostics, { desc = "[S]earch [D]iagnostics all" })
 vim.keymap.set("n", "<leader>sr", Snacks.picker.resume, { desc = "[S]earch [R]esume" })
-vim.keymap.set("n", "<leader>sr", Snacks.picker.resume, { desc = "[S]earch [R]esume" })
+
+vim.keymap.set("n", "<leader>sp", function()
+    local dirs = {}
+
+    local function add_dir(path)
+        path = vim.fs.normalize(vim.fn.expand(path))
+        if vim.fn.isdirectory(path) == 1 then
+            table.insert(dirs, {
+                text = path,
+                file = path,
+            })
+        end
+    end
+
+    if vim.fn.has("win32") == 1 then
+        for _, path in ipairs(vim.fn.globpath("D:/code", "*", false, true)) do
+            add_dir(path)
+        end
+        add_dir("~/AppData/Local/nvim")
+    else
+        for _, path in ipairs(vim.fn.globpath("~/code", "*", false, true)) do
+            add_dir(path)
+        end
+        add_dir("~/.config/nvim")
+    end
+
+    Snacks.picker.pick({
+        source = "code_dirs",
+        title = "Code dirs",
+        items = dirs,
+        format = "file",
+        confirm = function(picker, item)
+            picker:close()
+            if not item then
+                return
+            end
+
+            local dir = item.file or item.text
+            vim.cmd("cd " .. vim.fn.fnameescape(dir))
+            vim.cmd("edit .")
+        end,
+    })
+end, { desc = "[S]earch [P]roject dirs" })
 
 vim.keymap.set("n", "grr", Snacks.picker.lsp_references)
 vim.keymap.set("n", "gd", Snacks.picker.lsp_definitions)
@@ -142,7 +184,8 @@ vim.api.nvim_create_autocmd("LspProgress", {
     ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
     callback = function(ev)
         local client = vim.lsp.get_client_by_id(ev.data.client_id)
-        local value = ev.data.params.value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
+        local value = ev.data.params
+            .value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
         if not client or type(value) ~= "table" then
             return
         end
