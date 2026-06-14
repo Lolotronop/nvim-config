@@ -81,3 +81,12 @@ require("vim._core.ui2").enable({
         },
     },
 })
+
+if vim.g.neovide then
+    vim.o.guifont = "IosevkaTerm Nerd Font:h14"
+    vim.g.neovide_padding_top = 22
+    vim.g.neovide_padding_bottom = 0
+    vim.g.neovide_padding_right = 0
+    vim.g.neovide_padding_left = 0
+    vim.g.neovide_scroll_animation_length = 0.1
+end

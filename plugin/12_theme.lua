@@ -4,8 +4,12 @@ vim.pack.add({
 
 vim.g.gruvbox_baby_keyword_style = "bold"
 vim.g.gruvbox_baby_comment_style = "altfont"
+
 vim.g.gruvbox_baby_background_color = "dark"
-vim.g.gruvbox_baby_transparent_mode = 1
+
+if not vim.g.neovide then
+    vim.g.gruvbox_baby_transparent_mode = 1
+end
 
 require("gruvbox-baby")
 

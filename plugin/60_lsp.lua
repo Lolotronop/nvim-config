@@ -13,6 +13,18 @@ vim.filetype.add({
     },
 })
 
+local jails_cmd = { vim.fs.normalize("D:/soft/jai/Jails/bin/jails-win32-x64.exe") }
+local jai_path = vim.fn.exepath("jai")
+if jai_path ~= "" then
+    vim.list_extend(jails_cmd, { "-jai_path", vim.fs.normalize(jai_path) })
+end
+
+vim.lsp.config("jails", {
+    cmd = jails_cmd,
+    filetypes = { "jai" },
+    root_markers = { "jails.json", ".git" },
+})
+
 vim.g.lolo_lsp_loaded = false
 
 local function load_lsp()
