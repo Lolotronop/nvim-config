@@ -37,3 +37,30 @@ vim.keymap.set("n", "<leader>u", function()
         command = math.floor(vim.api.nvim_win_get_width(0) / 3) .. "vnew",
     })
 end, { desc = "[U]ndotree toggle" })
+
+
+vim.keymap.set("n", "<leader>q", function()
+    local current_win = vim.api.nvim_get_current_win()
+
+    for _, win in ipairs(vim.fn.getwininfo()) do
+        if win.quickfix == 1 then
+            vim.cmd("cclose")
+            return
+        end
+    end
+
+    vim.cmd("copen")
+
+    if vim.api.nvim_win_is_valid(current_win) then
+        vim.api.nvim_set_current_win(current_win)
+    end
+end, {
+    desc = "Toggle quickfix without focusing it",
+})
+
+vim.keymap.set("n", "<leader>Q", function()
+    vim.fn.setqflist({}, "r")
+    vim.cmd("cclose")
+end, {
+    desc = "Clear and close quickfix list",
+})
