@@ -14,8 +14,14 @@ vim.keymap.set("v", "<leader>r", 'y:%s/\\V<C-r>"//g<Left><Left>', {
     desc = "Replace visual selection in whole file",
 })
 
-vim.keymap.set("n", "<M-l>", "<cmd>cnext<CR>", { desc = "Next [L]ist" })
-vim.keymap.set("n", "<M-h>", "<cmd>cprevious<CR>", { desc = "Previous [L]ist" })
+local function qf_jump(command)
+    local size = vim.fn.getqflist({ size = 1 }).size
+    if size == 0 then return end
+    vim.cmd(size == 1 and "cc" or command)
+end
+
+vim.keymap.set("n", "<M-l>", function() qf_jump("cnext") end, { desc = "Next [L]ist" })
+vim.keymap.set("n", "<M-h>", function() qf_jump("cprevious") end, { desc = "Previous [L]ist" })
 
 vim.keymap.set("n", "<leader>rr", function()
     local buf = vim.api.nvim_get_current_buf()
