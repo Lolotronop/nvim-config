@@ -45,6 +45,11 @@ local function load_mini()
             signs = { add = "+", change = "~", delete = "-" },
         },
     })
+
+    vim.keymap.set("n", "<leader>g", function()
+        MiniDiff.toggle_overlay()
+    end)
+
     require("mini.git").setup()
 
     require("mini.pairs").setup({
