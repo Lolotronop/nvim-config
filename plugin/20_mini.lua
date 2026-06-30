@@ -48,7 +48,7 @@ local function load_mini()
 
     vim.keymap.set("n", "<leader>g", function()
         MiniDiff.toggle_overlay()
-    end)
+    end, { desc = "[G]it diff" })
 
     require("mini.git").setup()
 
