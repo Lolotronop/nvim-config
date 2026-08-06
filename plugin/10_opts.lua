@@ -86,3 +86,33 @@ require("vim._core.ui2").enable({
         },
     },
 })
+
+local function load_msvc()
+    if vim.fn.has("win32") ~= 1 then
+        return
+    end
+
+    local activate = [[D:\soft\msvc\setup_x64.bat]]
+
+    local f = io.open(activate, "r")
+    if not f then
+        return
+    end
+    f:close()
+
+    local handle = io.popen(string.format([[cmd /c ""%s" && set"]], activate))
+    if not handle then
+        return
+    end
+
+    for line in handle:lines() do
+        local k, v = line:match("^([^=]+)=(.*)$")
+        if k and v then
+            vim.fn.setenv(k, v)
+        end
+    end
+
+    handle:close()
+end
+
+load_msvc()
