@@ -5,6 +5,15 @@ vim.pack.add({
     },
 })
 
+vim.pack.add({ "https://github.com/WillEhrendreich/datastar.nvim" })
+require("datastar").setup({
+    diagnostics = true,            -- inline error/warning diagnostics
+    hover = true,                  -- K for hover docs
+    goto_definition = true,        -- gd for signal navigation
+    filetypes = { "html", "templ" }, -- activate for these filetypes; add "templ" if using Templ
+    version = nil,                 -- filter features by Datastar version
+})
+
 vim.g.lolo_blink_loaded = false
 local function load_blink()
     if vim.g.lolo_blink_loaded then
@@ -97,8 +106,13 @@ local function load_blink()
                     "buffer",
                 },
             },
-            default = { "lsp", "snippets", "path", "buffer" },
+            default = { "lsp", "snippets", "path", "buffer", "datastar" },
             providers = {
+                datastar = {
+                    name = "datastar",
+                    module = "datastar.cmp_source",
+                    score_offset = 100,
+                },
                 lazydev = {
                     name = "LazyDev",
                     module = "lazydev.integrations.blink",

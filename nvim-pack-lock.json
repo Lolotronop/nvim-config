@@ -9,6 +9,10 @@
       "rev": "619363c30309d29ffa631e67c8183f2a72caa373",
       "src": "https://github.com/stevearc/conform.nvim"
     },
+    "datastar.nvim": {
+      "rev": "6357daa9445b2b12e430849897a6bf3eca56b58d",
+      "src": "https://github.com/WillEhrendreich/datastar.nvim"
+    },
     "fff.nvim": {
       "rev": "086044f5f710e7577b0756828d085604aa137a2f",
       "src": "https://github.com/dmtrKovalenko/fff.nvim"
