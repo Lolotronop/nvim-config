@@ -36,6 +36,9 @@ vim.pack.add({
 })
 
 local function register_jai_parser()
+    if not vim.loop.fs_stat(jai_parser_path) then
+        return
+    end
     require("nvim-treesitter.parsers").jai = {
         install_info = {
             path = jai_parser_path,
