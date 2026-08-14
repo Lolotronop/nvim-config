@@ -74,7 +74,11 @@ vim.api.nvim_create_autocmd("FileType", {
         end
 
         vim.treesitter.start(buf, language)
-        vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        -- Templ has no Tree-sitter indents query; its indentexpr consequently
+        -- returns zero.  Let ftplugin/templ.lua retain normal indentation.
+        if filetype ~= "templ" then
+            vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end
     end,
 })
 
