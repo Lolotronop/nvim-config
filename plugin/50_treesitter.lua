@@ -47,9 +47,18 @@ local function register_jai_parser()
     }
 end
 
+local function register_templ_queries()
+    -- The installer reloads parser definitions immediately before TSUpdate,
+    -- so this override must be applied from its User event.
+    require("nvim-treesitter.parsers").templ.install_info.queries = "queries/templ"
+end
+
 vim.api.nvim_create_autocmd("User", {
     pattern = "TSUpdate",
-    callback = register_jai_parser,
+    callback = function()
+        register_jai_parser()
+        register_templ_queries()
+    end,
 })
 
 register_jai_parser()
@@ -74,11 +83,7 @@ vim.api.nvim_create_autocmd("FileType", {
         end
 
         vim.treesitter.start(buf, language)
-        -- Templ has no Tree-sitter indents query; its indentexpr consequently
-        -- returns zero.  Let ftplugin/templ.lua retain normal indentation.
-        if filetype ~= "templ" then
-            vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-        end
+        vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
     end,
 })
 
