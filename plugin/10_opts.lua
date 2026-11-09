@@ -30,8 +30,8 @@ vim.opt.backupcopy = "yes"
 vim.diagnostic.config({
     severity_sort = true,
     virtual_lines = false,
-    virtual_text = true,
-    underline = true,
+    virtual_text = false,
+    underline = false,
 })
 
 -- hide cmdline until you type

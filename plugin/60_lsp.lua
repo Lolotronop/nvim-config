@@ -55,6 +55,12 @@ vim.api.nvim_create_autocmd("UIEnter", {
 })
 
 local onattach = function(client_id, buf)
+    vim.keymap.set("n", "<leader>D", function()
+        vim.diagnostic.config({
+            virtual_text = not vim.diagnostic.config().virtual_text,
+            underline = not vim.diagnostic.config().underline,
+        })
+    end, { desc = "Toggle inline diagnostics" })
     vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
     vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, { desc = "Signature Help" })
     vim.keymap.set("n", "gk", vim.lsp.buf.signature_help, { desc = "Signature Help" })
